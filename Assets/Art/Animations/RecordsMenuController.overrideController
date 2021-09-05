@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: RecordsMenuController
+  m_Controller: {fileID: 9100000, guid: 4ab857c3d76c7324aba51e6749992364, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: a359044bb5b46914a9ae33e51f38e404, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: a359044bb5b46914a9ae33e51f38e404, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: b83261280776c5541bf5c8f30bdc9115, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: b83261280776c5541bf5c8f30bdc9115, type: 2}
