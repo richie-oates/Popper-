@@ -17,6 +17,7 @@ public class PlayerScore : Singleton<PlayerScore>
 
     ObjectSpawner objectSpawner;
     public bool gameOver;
+    private bool arcadeMode = true;
 
     public int Score
     {
@@ -32,6 +33,8 @@ public class PlayerScore : Singleton<PlayerScore>
     {
         // Add listener for GameState changes
         GameManager.Instance.OnGameStateChanged.AddListener(HandleGameStateChanged);
+        // Listener for GameMode Changes
+        EventBroker.ChangeGameMode += OnChangeGameMode;
 
         // Add listeners for missed bubbles and hit objects
         EventBroker.BubbleLost += OnBubbleLost;
@@ -114,7 +117,7 @@ public class PlayerScore : Singleton<PlayerScore>
             scoreText.text = String.Format("{0:#,###0}", score);
 
             //Check for high score
-            if (score > highScore)
+            if (arcadeMode && score > highScore)
             {
                 highScore = score;
                 highScoreText.text = "High Score: " + highScore;
@@ -171,7 +174,7 @@ public class PlayerScore : Singleton<PlayerScore>
     // Calls game over if the max is reached
     public void OnBubbleLost()
     {
-        if (!gameOver)
+        if (arcadeMode && !gameOver)
         {
             bubblesLost++;
             bubbleLostText.text = "Bubbles Lost: " + bubblesLost;
@@ -182,7 +185,7 @@ public class PlayerScore : Singleton<PlayerScore>
 
     public void OnMissedEverything()
     {
-        if (!gameOver)
+        if (arcadeMode && !gameOver)
         {
             currentMisses++;
             DangerLevelIncrease();
@@ -231,5 +234,10 @@ public class PlayerScore : Singleton<PlayerScore>
             if (currentMisses < 0) currentMisses = 0;
             dangerLevelSlider.value = bubblesLost + currentMisses;
         }
+    }
+
+    public void OnChangeGameMode(GameManager.GameMode currentGameMode)
+    {
+        arcadeMode = currentGameMode == GameManager.GameMode.ARCADE;
     }
 }

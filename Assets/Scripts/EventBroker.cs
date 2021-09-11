@@ -39,4 +39,11 @@ public class EventBroker
     {
         VibrationSwitch?.Invoke(vibrationOn);
     }
+
+    public static event Action<GameManager.GameMode> ChangeGameMode;
+
+    public static void CallChangeGameMode(GameManager.GameMode currentGameMode)
+    {
+        ChangeGameMode?.Invoke(currentGameMode);
+    }
 }

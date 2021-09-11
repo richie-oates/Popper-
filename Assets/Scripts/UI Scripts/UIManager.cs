@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class UIManager : Singleton<UIManager>
 {
-    [SerializeField] GameObject HUD, StartMenu, PauseMenu, GameOverMenu, SettingsMenu, BackgroundBlur;
+    [SerializeField] GameObject dangerMeter, HUD, StartMenu, PauseMenu, GameOverMenu, SettingsMenu, BackgroundBlur;
     AudioSource audioSource;
     [SerializeField] AudioClip[] buttonClickSounds;
     [SerializeField] Animator startMenuAnimator;
@@ -24,6 +24,8 @@ public class UIManager : Singleton<UIManager>
         GameManager.Instance.OnGameStateChanged.AddListener(HandleGameStateChanged);
         // Show Start Menu at start of game after short delay
         StartCoroutine(DelayShowStartMenu());
+        // Add listener for Game Mode changes
+        EventBroker.ChangeGameMode += OnChangeGameMode;
     }
 
     IEnumerator DelayShowStartMenu()
@@ -101,5 +103,10 @@ public class UIManager : Singleton<UIManager>
     public void BackToPregame()
     {
         GameManager.Instance.UpdateState(GameManager.GameState.PREGAME);
+    }
+
+    public void OnChangeGameMode(GameManager.GameMode gameMode)
+    {
+        dangerMeter.SetActive(gameMode == GameManager.GameMode.ARCADE);
     }
 }
