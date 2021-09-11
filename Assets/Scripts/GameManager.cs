@@ -16,6 +16,14 @@ public class GameManager : Singleton<GameManager>
         ENDGAME
     }
 
+    public enum GameMode
+    {
+        ARCADE,
+        CASUAL
+    }
+
+    GameMode _currentGameMode = GameMode.ARCADE;
+
     GameState returnAfterPause;
 
     [System.Serializable] public class EventGameState : UnityEvent<GameState, GameState> { }
@@ -32,6 +40,12 @@ public class GameManager : Singleton<GameManager>
     {
         get { return _currentGameState; }
         private set { _currentGameState = value; }
+    }
+
+    public GameMode CurrentGameMode
+    {
+        get { return _currentGameMode; }
+        private set { _currentGameMode = value; }
     }
 
     protected override void Awake()
@@ -93,6 +107,13 @@ public class GameManager : Singleton<GameManager>
                     break;
             }
         }
+    }
+
+    public void ChangeGameMode(GameMode gameMode)
+    {
+        _currentGameMode = gameMode;
+        EventBroker.CallChangeGameMode(gameMode);
+        Debug.Log("Game Mode changed to: " + _currentGameMode);
     }
 
     public void UpdateState(GameState state)
