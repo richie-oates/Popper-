@@ -32,4 +32,11 @@ public class EventBroker
     {
         MissedEverything?.Invoke();
     }
+
+    public static event Action<bool> VibrationSwitch;
+
+    public static void CallVibrationSwitch(bool vibrationOn)
+    {
+        VibrationSwitch?.Invoke(vibrationOn);
+    }
 }

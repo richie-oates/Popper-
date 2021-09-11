@@ -8,10 +8,21 @@ using UnityEngine.EventSystems;
 public class MissedEverything : MonoBehaviour, IPointerClickHandler
 {
     PlayerScore playerScore;
+    bool vibrationOn;
+
+    private void Awake()
+    {
+        EventBroker.VibrationSwitch += OnVibrationSwitch;
+    }
 
     void Start()
     {
         playerScore = FindObjectOfType<PlayerScore>();
+    }
+
+    public void OnVibrationSwitch(bool boolean)
+    {
+        vibrationOn = boolean;
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -19,7 +30,10 @@ public class MissedEverything : MonoBehaviour, IPointerClickHandler
         if (GameManager.Instance.CurrentGameState == GameManager.GameState.FROZEN || GameManager.Instance.CurrentGameState == GameManager.GameState.RUNNING)
         {
             playerScore.ResetCombo();
-            Handheld.Vibrate();
+            if (vibrationOn)
+            {
+                Handheld.Vibrate();
+            }
             GameManager.Instance.ShowText("MISSED!", 50, Color.red, eventData.pointerCurrentRaycast.worldPosition, Vector3.up * 10, 0.5f);
             EventBroker.CallMissedEverything();
         }
