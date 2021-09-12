@@ -17,8 +17,9 @@ public class ClockOnClick : ObjectOnClick
         clockMovement = GetComponent<ClockMovement>();
         base.Start();
     }
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         broken = false;
     }
     protected override void OnClickOnObject()

@@ -2,11 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 
 public class GameManager : Singleton<GameManager>
 {
     private Vector2 screenBounds;
+    private AsyncOperation screenLoading;
+    public GameObject loadingScreen, startButton, loadingText;
+    public ProgressBar loadingProgressBar;
+    public CanvasGroup alphaCanvas;
     public enum GameState
     {
         PREGAME,
@@ -23,13 +28,12 @@ public class GameManager : Singleton<GameManager>
     }
 
     GameMode _currentGameMode = GameMode.ARCADE;
-
+    GameState _currentGameState = GameState.PREGAME;
     GameState returnAfterPause;
 
     [System.Serializable] public class EventGameState : UnityEvent<GameState, GameState> { }
     public EventGameState OnGameStateChanged;
-    GameState _currentGameState = GameState.PREGAME;
-    public FloatingTextManager floatingTextManager;
+    
 
     public Vector2 ScreenBounds
     {
@@ -50,13 +54,61 @@ public class GameManager : Singleton<GameManager>
 
     protected override void Awake()
     {
-#if UNITY_WEBGL
+        base.Awake();
+        DontDestroyOnLoad(gameObject); // Game Manager will persist after the main scene has loaded
+
+#if UNITY_WEBGL || UNITY_ANDROID
         Application.targetFrameRate = -1;
 #else
-        Application.targetFrameRate = 60;
+        // Application.targetFrameRate = 60;
 #endif
-        base.Awake();
         screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
+        loadingScreen.gameObject.SetActive(true);
+    }
+
+    private void Start()
+    {
+        LoadGame();
+    }
+
+    public void LoadGame()
+    {
+        StartCoroutine(LoadGameAsync());
+    }
+
+    public IEnumerator LoadGameAsync()
+    {
+        yield return new WaitForEndOfFrame();
+        loadingText.SetActive(true);
+        var seq = LeanTween.sequence();
+        seq.append(LeanTween.alphaCanvas(alphaCanvas, 1, 0.5f));
+        seq.append(() =>
+        {
+            screenLoading = SceneManager.LoadSceneAsync((int)SceneIndexes.MAIN, LoadSceneMode.Additive);
+            StartCoroutine(GetSceneLoadProgress());
+        });
+    }
+
+
+    public IEnumerator GetSceneLoadProgress()
+    {
+        
+        while(!screenLoading.isDone)
+        {
+            loadingProgressBar.current = Mathf.RoundToInt(screenLoading.progress * 100);
+            
+            yield return null; 
+        }
+        loadingProgressBar.current = 100;
+        yield return new WaitForSeconds(0.5f);
+        var seq = LeanTween.sequence();
+        seq.append(LeanTween.alphaCanvas(alphaCanvas, 0, 0.5f));
+        seq.append(() =>
+        {
+            loadingScreen.gameObject.SetActive(false);
+        });
+
+        GameObject.FindObjectOfType<MusicController>().PlayMenuMusic();
     }
 
     private void Update()
@@ -71,21 +123,6 @@ public class GameManager : Singleton<GameManager>
 #endif
          }
 
-        // Press enter to start the game
-        if(Input.GetKeyDown(KeyCode.Return))
-        {
-            switch (_currentGameState)
-            {
-                case GameState.PREGAME:
-                    UpdateState(GameState.RUNNING);
-                    break;
-                case GameState.ENDGAME:
-                    UpdateState(GameState.PREGAME);
-                    break;
-                default:
-                    break;
-            }
-        }
 
         // Press "P" to pause the game
         if(Input.GetKeyDown(KeyCode.P))
@@ -122,39 +159,7 @@ public class GameManager : Singleton<GameManager>
         _currentGameState = state;
         Debug.Log("GameManager: Game state changed to " + _currentGameState);
 
-        switch (_currentGameState)
-        {
-            case GameState.PREGAME:
-                Time.timeScale = 1.0f;
-                break;
-
-            case GameState.RUNNING:
-                Time.timeScale = 1.0f;
-                break;
-
-            case GameState.FROZEN:
-                Time.timeScale = 1.0f;
-                break;
-
-            case GameState.PAUSED:
-                Time.timeScale = 1.0f;
-                break;
-
-            case GameState.ENDGAME:
-                Time.timeScale = 1.0f;
-                break;
-
-            default:
-                break;
-        }
-
         OnGameStateChanged.Invoke(_currentGameState, previousGameState);
-    }
-
-    // Floating Text
-    public void ShowText(string msg, int fontSize, Color color, Vector3 position, Vector3 motion, float duration)
-    {
-        floatingTextManager.Show(msg, fontSize, color, position, motion, duration);
     }
 }
 

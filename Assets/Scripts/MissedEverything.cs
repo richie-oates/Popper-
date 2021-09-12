@@ -34,7 +34,7 @@ public class MissedEverything : MonoBehaviour, IPointerClickHandler
             {
                 Handheld.Vibrate();
             }
-            GameManager.Instance.ShowText("MISSED!", 50, Color.red, eventData.pointerCurrentRaycast.worldPosition, Vector3.up * 10, 0.5f);
+            UIManager.Instance.ShowText("MISSED!", 50, Color.red, eventData.pointerCurrentRaycast.worldPosition, Vector3.up * 10, 0.5f);
             EventBroker.CallMissedEverything();
         }
     }

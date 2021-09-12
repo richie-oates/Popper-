@@ -18,7 +18,8 @@ public class BalloonOnClick : ObjectOnClick
 
     protected override void OnClickOnObject()
     {
-            animator.SetTrigger("pop"); // balloon pop animation
+        base.OnClickOnObject();
+        animator.SetTrigger("pop"); // balloon pop animation
             gameObject.tag = "safe";    // change tag so it doesn't call onclick on itself again
             // Calls OnClick on all active objects within a certain distance of the popped balloon
             List<GameObject> objects = objectPooler.pooledObjects;
@@ -32,7 +33,6 @@ public class BalloonOnClick : ObjectOnClick
                 }
             }
         gameObject.tag = "Balloon"; // Change the tag back so we can use it again in the object pooler
-        base.OnClickOnObject();
     }    
 
     IEnumerator WaitDontDoItYet(float time, GameObject obj)

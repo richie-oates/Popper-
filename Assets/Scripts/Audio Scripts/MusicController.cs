@@ -11,7 +11,7 @@ public class MusicController : MonoBehaviour
     [SerializeField] AudioClip[] gameMusic;
     // [SerializeField] AudioClip[] menuMusic;
     [SerializeField] TextMeshProUGUI gameTrackText, menuTrackText;
-    int gameMusicTrackNumber = 0, menuMusicTrackNumber = 0;
+    int gameMusicTrackNumber = 3, menuMusicTrackNumber = 1;
     float previousVolume;
     [SerializeField] GameObject muteButton, unMuteButton;
     bool playMenuMusicOnExitMenu;
@@ -29,7 +29,7 @@ public class MusicController : MonoBehaviour
         gameMusicTrackNumber = PlayerPrefs.GetInt("gameTrack", gameMusicTrackNumber);
         gameTrackText.text = "" + (gameMusicTrackNumber + 1);
         // Play menu music
-        PlayMenuMusic();
+        // PlayMenuMusic();
         backButton.onClick.AddListener(OnExitMenu);
     }
 
@@ -47,7 +47,13 @@ public class MusicController : MonoBehaviour
                 }
                 else 
                 {
-                    audioSource.UnPause();
+                    if (audioSource.clip == gameMusic[gameMusicTrackNumber])
+                        audioSource.UnPause();
+                    else
+                    {
+                        audioSource.clip = gameMusic[gameMusicTrackNumber];
+                        audioSource.Play();
+                    }
                 }
                     
                 break;
@@ -83,7 +89,7 @@ public class MusicController : MonoBehaviour
         PlayerPrefs.SetInt("menuTrack", menuMusicTrackNumber);
         PlayerPrefs.SetInt("gameTrack", gameMusicTrackNumber);
         
-        // Restert menu music if we were demoing in game music
+        // Restart menu music if we were demoing in game music
         if (playMenuMusicOnExitMenu)
             PlayMenuMusic();
     }

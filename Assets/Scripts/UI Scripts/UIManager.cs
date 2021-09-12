@@ -15,6 +15,7 @@ public class UIManager : Singleton<UIManager>
     GameManager.GameState _currentState;
     [SerializeField] float delayShowStartMenuTime = 5;
     [SerializeField] TextMeshProUGUI scoreText, highScoreText;
+    public FloatingTextManager floatingTextManager;
 
     // Start is called before the first frame update
     void Start()
@@ -79,9 +80,9 @@ public class UIManager : Singleton<UIManager>
         {
             HUD.SetActive(false);
             BackgroundBlur.SetActive(true);
-            StartMenu.SetActive(true);
+            // StartMenu.SetActive(true);
             PauseMenu.SetActive(false);
-            GameOverMenu.SetActive(false);
+            // GameOverMenu.SetActive(false);
         }
     }
 
@@ -108,5 +109,11 @@ public class UIManager : Singleton<UIManager>
     public void OnChangeGameMode(GameManager.GameMode gameMode)
     {
         dangerMeter.SetActive(gameMode == GameManager.GameMode.ARCADE);
+    }
+
+    // Floating Text
+    public void ShowText(string msg, int fontSize, Color color, Vector3 position, Vector3 motion, float duration)
+    {
+        floatingTextManager.Show(msg, fontSize, color, position, motion, duration);
     }
 }

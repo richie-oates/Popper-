@@ -111,7 +111,7 @@ public class PlayerScore : Singleton<PlayerScore>
             if (destroyedObject != null)
             { 
                 // Floating text to show points scored
-                GameManager.Instance.ShowText("+" + (extraPoints).ToString(), 50, new Color(0.1137f, 0.1215f, 0.898f), destroyedObject.transform.position, Vector3.up * 10, 0.5f); 
+                UIManager.Instance.ShowText("+" + (extraPoints).ToString(), 50, new Color(0.1137f, 0.1215f, 0.898f), destroyedObject.transform.position, Vector3.up * 10, 0.5f); 
             }
             //Display total score
             scoreText.text = String.Format("{0:#,###0}", score);

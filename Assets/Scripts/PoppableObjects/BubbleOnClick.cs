@@ -15,8 +15,9 @@ public class BubbleOnClick : ObjectOnClick
         animator = GetComponentInChildren<Animator>();
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         bubbleProperties = GetComponent<Bubble>();
     }
 

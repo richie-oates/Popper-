@@ -13,8 +13,9 @@ public class BirdOnClick : ObjectOnClick
         base.Start();
         birdMovement = GetComponent<BirdMovement>();
     }
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         dead = false;
     }
 
