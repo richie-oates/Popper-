@@ -18,6 +18,7 @@ public class GameManager : Singleton<GameManager>
         RUNNING,
         PAUSED,
         FROZEN,
+        QUIT,
         ENDGAME
     }
 
@@ -29,7 +30,7 @@ public class GameManager : Singleton<GameManager>
 
     GameMode _currentGameMode = GameMode.ARCADE;
     GameState _currentGameState = GameState.PREGAME;
-    GameState returnAfterPause;
+    GameState returnAfterPause, returnOnCancel;
 
     [System.Serializable] public class EventGameState : UnityEvent<GameState, GameState> { }
     public EventGameState OnGameStateChanged;
@@ -116,34 +117,65 @@ public class GameManager : Singleton<GameManager>
         // Press escape to exit application or exit play mode in editor
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-#else
-            Application.Quit();
-#endif
-         }
+            Debug.Log("Escape pressed");
+            if (_currentGameState == GameState.QUIT)
+                QuitGame(true);
+            else if (_currentGameState == GameState.RUNNING)
+                PauseToggle();
+            else
+            {
+                QuitGameQuery();
+            }
+        }
 
 
         // Press "P" to pause the game
         if(Input.GetKeyDown(KeyCode.P))
         {
-            switch (_currentGameState)
-            {
-                case GameState.RUNNING:
-                    returnAfterPause = _currentGameState;
-                    UpdateState(GameState.PAUSED);
-                    break;
-                case GameState.FROZEN:
-                    returnAfterPause = _currentGameState;
-                    UpdateState(GameState.PAUSED);
-                    break;
-                case GameState.PAUSED:
-                    UpdateState(returnAfterPause);
-                    break;
-                default:
-                    break;
-            }
+            Debug.Log("P button pressed");
+            PauseToggle();
         }
+    }
+
+    public void PauseToggle()
+    {
+        switch (_currentGameState)
+        {
+            case GameState.RUNNING:
+                returnAfterPause = _currentGameState;
+                UpdateState(GameState.PAUSED);
+                break;
+            case GameState.FROZEN:
+                returnAfterPause = _currentGameState;
+                UpdateState(GameState.PAUSED);
+                break;
+            case GameState.PAUSED:
+                UpdateState(returnAfterPause);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void QuitGameQuery()
+    {
+        returnOnCancel = _currentGameState;
+        UpdateState(GameState.QUIT);
+    }
+
+    
+    public void QuitGame(bool quit)
+    {
+        if (quit)
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
+        }
+        else
+            UpdateState(returnOnCancel);
     }
 
     public void ChangeGameMode(GameMode gameMode)

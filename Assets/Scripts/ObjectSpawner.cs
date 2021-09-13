@@ -29,6 +29,7 @@ public class ObjectSpawner : MonoBehaviour
         EventBroker.BubblePopped += IncreaseSpeed;
         EventBroker.BubbleLost += IncreaseSpeed;
         EventBroker.MissedEverything += OnMissedEverything;
+        EventBroker.GameOverTriggered += OnGameOverTriggered;
     }
 
     private void InitialiseVariables()
@@ -211,10 +212,11 @@ public class ObjectSpawner : MonoBehaviour
         return count;
     }
 
-    public void TriggerGameOver(float interval, float time)
+    // Spawns lots of bubbles after game over has been triggered
+    public void OnGameOverTriggered()
     {
         gameOver = true;
-        LeanTween.value(spawnInterval, interval, time).setOnUpdate((float val) =>
+        LeanTween.value(spawnInterval, 0.01f, 0.5f).setOnUpdate((float val) =>
         {
             spawnInterval = val;
         });

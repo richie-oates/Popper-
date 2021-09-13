@@ -15,7 +15,7 @@ public class PauseButton : MonoBehaviour
         {
             counting = false;
             timer = 0;
-            GameManager.Instance.UpdateState(GameManager.GameState.PAUSED);
+            GameManager.Instance.PauseToggle();
         }
     }
 

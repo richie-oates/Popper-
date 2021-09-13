@@ -46,4 +46,18 @@ public class EventBroker
     {
         ChangeGameMode?.Invoke(currentGameMode);
     }
+
+    public static event Action GameOverTriggered;
+
+    public static void CallGameOverTriggered()
+    {
+        GameOverTriggered?.Invoke();
+    }
+
+    public static event Action ComboLevelUp;
+
+    public static void CallComboLevelUp()
+    {
+        ComboLevelUp?.Invoke();
+    }
 }

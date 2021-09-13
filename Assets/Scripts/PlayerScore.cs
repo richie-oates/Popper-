@@ -79,7 +79,6 @@ public class PlayerScore : Singleton<PlayerScore>
             //Save high score to player prefs
             PlayerPrefs.SetInt("highscore", highScore);
             PlayerPrefs.SetInt("highCombo", highCombo);
-
         }
     }
 
@@ -140,6 +139,7 @@ public class PlayerScore : Singleton<PlayerScore>
             comboLevelSlider.value = combo % 10;
             if (combo > 1 && combo % 10 == 0)
             {
+                EventBroker.CallComboLevelUp();
                 comboLevel = combo;
                 comboLevelText.text = "X" + combo + " Combo";
             }
@@ -209,7 +209,7 @@ public class PlayerScore : Singleton<PlayerScore>
     // Triggers a game over sequence where hundreds of bubbles are spawned at once
     IEnumerator GameOverSequence()
     {
-        objectSpawner.TriggerGameOver(0.01f, 0.5f);
+        EventBroker.CallGameOverTriggered();
         yield return new WaitForSeconds(3.0f);
         GameManager.Instance.UpdateState(GameManager.GameState.ENDGAME);
     }
