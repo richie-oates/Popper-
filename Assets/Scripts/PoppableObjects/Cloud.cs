@@ -29,7 +29,7 @@ public class Cloud : ObjectOnClick
         base.Start();
         objectSpawner = FindObjectOfType<ObjectSpawner>();
         //Needs to use a seperate audiosource because on click destroys itself before it would have chance to play a sound
-        audioSource = GameObject.Find("Cloud Audio Source").GetComponent<AudioSource>();
+        audioSource = GameObject.Find("SFX Audio Source").GetComponent<AudioSource>();
     }
 
     protected override void OnClickOnObject()

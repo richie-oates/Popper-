@@ -8,10 +8,10 @@ using UnityEngine.UI;
 
 public class UIManager : Singleton<UIManager>
 {
-    [SerializeField] GameObject dangerMeter, HUD, StartMenu, PauseMenu, GameOverMenu, SettingsMenu, BackgroundBlur;
+    [SerializeField] GameObject dangerMeter, HUD, StartMenu, PauseMenu, GameOverMenu, SettingsMenu, QuitMenu, RecordsMenu, BackgroundBlur, TutorialMenu;
     AudioSource audioSource;
     [SerializeField] AudioClip[] buttonClickSounds;
-    [SerializeField] Animator startMenuAnimator;
+    [SerializeField] Animator startMenuAnimator, comboLevelUpTextAnimator;
     GameManager.GameState _currentState;
     [SerializeField] float delayShowStartMenuTime = 5;
     [SerializeField] TextMeshProUGUI scoreText, highScoreText;
@@ -21,6 +21,7 @@ public class UIManager : Singleton<UIManager>
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        EventBroker.ComboLevelUp += OnComboLevelUp;
         // Add listener for GameState changes
         GameManager.Instance.OnGameStateChanged.AddListener(HandleGameStateChanged);
         // Show Start Menu at start of game after short delay
@@ -80,9 +81,23 @@ public class UIManager : Singleton<UIManager>
         {
             HUD.SetActive(false);
             BackgroundBlur.SetActive(true);
-            // StartMenu.SetActive(true);
+            //StartMenu.SetActive(true);
             PauseMenu.SetActive(false);
             // GameOverMenu.SetActive(false);
+            if (previousState == GameManager.GameState.QUIT)
+                StartMenu.SetActive(true);
+        }
+        if (currentState == GameManager.GameState.QUIT)
+        {
+            HUD.SetActive(false);
+            BackgroundBlur.SetActive(true);
+            StartMenu.SetActive(false);
+            PauseMenu.SetActive(false);
+            GameOverMenu.SetActive(false);
+            QuitMenu.SetActive(true);
+            SettingsMenu.SetActive(false);
+            RecordsMenu.SetActive(false);
+            TutorialMenu.SetActive(false);
         }
     }
 
@@ -98,7 +113,7 @@ public class UIManager : Singleton<UIManager>
 
     public void UnpauseGame()
     {
-        GameManager.Instance.UpdateState(GameManager.GameState.RUNNING);
+        GameManager.Instance.PauseToggle();
     }
 
     public void BackToPregame()
@@ -111,9 +126,20 @@ public class UIManager : Singleton<UIManager>
         dangerMeter.SetActive(gameMode == GameManager.GameMode.ARCADE);
     }
 
+    public void OnComboLevelUp()
+    {
+        comboLevelUpTextAnimator.SetTrigger("ShowText");
+    }
+
     // Floating Text
     public void ShowText(string msg, int fontSize, Color color, Vector3 position, Vector3 motion, float duration)
     {
         floatingTextManager.Show(msg, fontSize, color, position, motion, duration);
+    }
+
+    public void ConfirmQuit(bool quit)
+    {
+        QuitMenu.SetActive(false);
+        GameManager.Instance.QuitGame(quit);
     }
 }

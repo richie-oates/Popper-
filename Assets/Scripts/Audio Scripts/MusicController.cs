@@ -9,7 +9,7 @@ public class MusicController : MonoBehaviour
     private GameManager.GameState _currentState;
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip[] gameMusic;
-    // [SerializeField] AudioClip[] menuMusic;
+    [SerializeField] AudioClip gameOverMusic;
     [SerializeField] TextMeshProUGUI gameTrackText, menuTrackText;
     int gameMusicTrackNumber = 3, menuMusicTrackNumber = 1;
     float previousVolume;
@@ -20,7 +20,7 @@ public class MusicController : MonoBehaviour
 
     private void Start()
     {
-
+        EventBroker.GameOverTriggered += OnGameOverTriggered;
         // Add listener for GameState changes
         GameManager.Instance.OnGameStateChanged.AddListener(HandleGameStateChanged);
         // Get tracks from player prefs
@@ -67,20 +67,23 @@ public class MusicController : MonoBehaviour
                 break;
 
             case GameManager.GameState.PREGAME:
-                if (previousState != GameManager.GameState.ENDGAME)
-                {
-                    PlayMenuMusic();
-                }
+                PlayMenuMusic();
                 break;
 
             case GameManager.GameState.ENDGAME:
-                PlayMenuMusic();
+                // PlayMenuMusic();
                 break;
 
             default:
                 audioSource.Play();
                 break;
         }
+    }
+
+    public void OnGameOverTriggered()
+    {
+        audioSource.clip = gameOverMusic;
+        audioSource.Play();
     }
 
     public void OnExitMenu()
