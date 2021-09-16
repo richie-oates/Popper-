@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class ClockOnClick : ObjectOnClick
 {
-    [SerializeField] int timeToFreeze;
+    [SerializeField] int timeToFreeze = 5;
     ClockMovement clockMovement;
-    bool broken;
     [SerializeField] AudioClip[] breakSounds;
     [SerializeField] AudioClip[] boingSounds;
     [SerializeField] AudioClip ticking;
@@ -17,26 +16,19 @@ public class ClockOnClick : ObjectOnClick
         clockMovement = GetComponent<ClockMovement>();
         base.Start();
     }
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-        broken = false;
-    }
+    
     protected override void OnClickOnObject()
     {
-        if (!broken)
+        base.OnClickOnObject();
+        if (breakSounds.Length > 0)
+            audioSource.PlayOneShot(breakSounds[Random.Range(0, breakSounds.Length)]);
+        if (boingSounds.Length > 0)
+            audioSource.PlayOneShot(boingSounds[Random.Range(0, boingSounds.Length)]);
+        if (_currentState == GameManager.GameState.RUNNING && !PlayerScore.Instance.gameOver)
         {
-            broken = true;
-            clockMovement.BreakClock();
-            if (breakSounds.Length > 0)
-                audioSource.PlayOneShot(breakSounds[Random.Range(0, breakSounds.Length)]);
-            if (boingSounds.Length > 0)
-                audioSource.PlayOneShot(boingSounds[Random.Range(0, boingSounds.Length)]);
-            if (GameManager.Instance.CurrentGameState == GameManager.GameState.RUNNING && !PlayerScore.Instance.gameOver)
-            {
-                freezeTimeCoroutine = StartCoroutine(FreezeTimeForSeconds(timeToFreeze));
-            }
-        }       
+            freezeTimeCoroutine = StartCoroutine(FreezeTimeForSeconds(timeToFreeze));
+        }
+        clockMovement.BreakClock();
     }
 
     private IEnumerator FreezeTimeForSeconds(int seconds)
@@ -45,6 +37,8 @@ public class ClockOnClick : ObjectOnClick
         audioSource.PlayOneShot(ticking);
         yield return new WaitForSeconds(seconds);
         audioSource.Stop();
+        while (_currentState != GameManager.GameState.FROZEN)
+            yield return null;
         GameManager.Instance.UpdateState(GameManager.GameState.RUNNING);
     }
 
@@ -52,9 +46,12 @@ public class ClockOnClick : ObjectOnClick
     {
         _currentState = currentState;
         if (currentState == GameManager.GameState.PAUSED && previousState == GameManager.GameState.FROZEN)
+        {
             audioSource.Pause();
+        }
         if (currentState == GameManager.GameState.FROZEN && previousState == GameManager.GameState.PAUSED)
             audioSource.UnPause();
+        
         if (currentState == GameManager.GameState.ENDGAME)
         {
             if (freezeTimeCoroutine != null)

@@ -4,14 +4,19 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
+// Inherits from Singleton and persists through scenes
+// Handles game states and broadcasts when state is changed
+// As with game modes
+// Loads the main scene and shows a Loading screen and bar while this is happening
+// Handles qutting the game/application
 
 public class GameManager : Singleton<GameManager>
 {
     private Vector2 screenBounds;
     private AsyncOperation screenLoading;
-    public GameObject loadingScreen, startButton, loadingText;
-    public ProgressBar loadingProgressBar;
-    public CanvasGroup alphaCanvas;
+    [SerializeField] GameObject loadingScreen, loadingText;
+    [SerializeField] ProgressBar loadingProgressBar;
+    [SerializeField] CanvasGroup LoadingScreenAlphaCanvas;
     public enum GameState
     {
         PREGAME,
@@ -30,7 +35,8 @@ public class GameManager : Singleton<GameManager>
 
     GameMode _currentGameMode = GameMode.ARCADE;
     GameState _currentGameState = GameState.PREGAME;
-    GameState returnAfterPause, returnOnCancel;
+    GameState returnAfterPause; // State to return to after unpausing game
+    GameState returnOnCancel; // State to return to after cancelling quit game
 
     [System.Serializable] public class EventGameState : UnityEvent<GameState, GameState> { }
     public EventGameState OnGameStateChanged;
@@ -58,12 +64,14 @@ public class GameManager : Singleton<GameManager>
         base.Awake();
         DontDestroyOnLoad(gameObject); // Game Manager will persist after the main scene has loaded
 
+        // Set the target frame rate dependent on device
 #if UNITY_WEBGL || UNITY_ANDROID
         Application.targetFrameRate = -1;
-#else
-        // Application.targetFrameRate = 60;
 #endif
+
+        // Get the screenbounds from the main camera
         screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
+        // Activate loading screen
         loadingScreen.gameObject.SetActive(true);
     }
 
@@ -77,12 +85,14 @@ public class GameManager : Singleton<GameManager>
         StartCoroutine(LoadGameAsync());
     }
 
+    // Fades in the Loading Screen
+    // Loads the main game scene
     public IEnumerator LoadGameAsync()
     {
         yield return new WaitForEndOfFrame();
         loadingText.SetActive(true);
         var seq = LeanTween.sequence();
-        seq.append(LeanTween.alphaCanvas(alphaCanvas, 1, 0.5f));
+        seq.append(LeanTween.alphaCanvas(LoadingScreenAlphaCanvas, 1, 0.5f));
         seq.append(() =>
         {
             screenLoading = SceneManager.LoadSceneAsync((int)SceneIndexes.MAIN, LoadSceneMode.Additive);
@@ -90,7 +100,9 @@ public class GameManager : Singleton<GameManager>
         });
     }
 
-
+    // Updates the loading bar as the main scene is loading
+    // Fades out the loading scene when the main scene has finished loading
+    // Starts the music once th emain scene is visible
     public IEnumerator GetSceneLoadProgress()
     {
         
@@ -103,7 +115,7 @@ public class GameManager : Singleton<GameManager>
         loadingProgressBar.current = 100;
         yield return new WaitForSeconds(0.5f);
         var seq = LeanTween.sequence();
-        seq.append(LeanTween.alphaCanvas(alphaCanvas, 0, 0.5f));
+        seq.append(LeanTween.alphaCanvas(LoadingScreenAlphaCanvas, 0, 0.5f));
         seq.append(() =>
         {
             loadingScreen.gameObject.SetActive(false);
@@ -114,7 +126,7 @@ public class GameManager : Singleton<GameManager>
 
     private void Update()
     {
-        // Press escape to exit application or exit play mode in editor
+        // Press escape / Android back button to quit game, open the quit menu, or pause menu depending on current state
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Debug.Log("Escape pressed");
@@ -127,18 +139,11 @@ public class GameManager : Singleton<GameManager>
                 QuitGameQuery();
             }
         }
-
-
-        // Press "P" to pause the game
-        if(Input.GetKeyDown(KeyCode.P))
-        {
-            Debug.Log("P button pressed");
-            PauseToggle();
-        }
     }
 
     public void PauseToggle()
     {
+        // This makes sure we return to the correct state after unpausing the game
         switch (_currentGameState)
         {
             case GameState.RUNNING:
@@ -157,13 +162,31 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    // Changes game mode, currently between arcade and casual
+    // Calls on the Eventbroker class to broadcast a message notifying of this change
+    public void ChangeGameMode(GameMode gameMode)
+    {
+        _currentGameMode = gameMode;
+        EventBroker.CallChangeGameMode(gameMode);
+    }
+
+    // Changes the game state and sends the event to any listeners
+    public void UpdateState(GameState state)
+    {
+        GameState previousGameState = _currentGameState;
+        _currentGameState = state;
+        OnGameStateChanged.Invoke(_currentGameState, previousGameState);
+    }
+
+    // Takes a reference to current state in case we need to return to it
+    // Changes to Quit game state
     public void QuitGameQuery()
     {
         returnOnCancel = _currentGameState;
         UpdateState(GameState.QUIT);
     }
 
-    
+    // Quits game or returns to previous state
     public void QuitGame(bool quit)
     {
         if (quit)
@@ -176,22 +199,6 @@ public class GameManager : Singleton<GameManager>
         }
         else
             UpdateState(returnOnCancel);
-    }
-
-    public void ChangeGameMode(GameMode gameMode)
-    {
-        _currentGameMode = gameMode;
-        EventBroker.CallChangeGameMode(gameMode);
-        Debug.Log("Game Mode changed to: " + _currentGameMode);
-    }
-
-    public void UpdateState(GameState state)
-    {
-        GameState previousGameState = _currentGameState;
-        _currentGameState = state;
-        Debug.Log("GameManager: Game state changed to " + _currentGameState);
-
-        OnGameStateChanged.Invoke(_currentGameState, previousGameState);
     }
 }
 

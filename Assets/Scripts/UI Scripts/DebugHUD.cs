@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Shows some extra information in game, useful for debugging
 public class DebugHUD : MonoBehaviour
 {
     [SerializeField] GameObject debugHUD;

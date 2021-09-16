@@ -22,8 +22,10 @@ public class VibrationToggle : MonoBehaviour
     {
         bool vibrationBool = value > 0.0f;
         vibrationOn = vibrationBool;
+#if UNITY_ANDROID
         if (vibrationBool)
             Handheld.Vibrate();
+#endif
         EventBroker.CallVibrationSwitch(vibrationBool);
     }
 

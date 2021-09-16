@@ -3,7 +3,7 @@ using UnityEngine;
 public class ObjectOnClick : MonoBehaviour
 {
 
-    protected GameManager.GameState _currentState;
+    public GameManager.GameState _currentState;
     [SerializeField] protected AudioSource audioSource;
     [SerializeField] protected AudioClip[] onClickSounds;
     [SerializeField] protected bool objectHit;
@@ -17,6 +17,7 @@ public class ObjectOnClick : MonoBehaviour
 
     protected virtual void OnEnable()
     {
+        _currentState = GameManager.Instance.CurrentGameState;
         objectHit = false;
     }
 

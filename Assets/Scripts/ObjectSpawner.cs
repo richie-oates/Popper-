@@ -4,79 +4,96 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+
+// TODO: In need of some refactoring, decoupling and splitting into smaller scripts
+
+// Repetitively spawns objects from the pool at intervals which vary depending on user actions
+// Sets the random range of speed for bubbles as well as size of bubbles and clouds
+// Times and tracks the waves and spawns objects depending on which wave we're on
+
 public class ObjectSpawner : MonoBehaviour
 {
-    [SerializeField] private float initial_Max_VertSpeed = 4f, initial_Min_VertSpeed = 0.1f, absolute_Max_VertSpeed = 6.0f; 
-    [SerializeField] private float initialSpawnInterval = 1.0f, absolute_Min_SpawnInterval = 0.1f, timeBetweenWaves = 5.0f;
-    [SerializeField] private float wave_length_time = 30.0f, waveTimeIncreasePerLevel = 10.0f;
-    public int waveCounter = 1;
-    [SerializeField] private float min_VertSpeed, max_VertSpeed, spawnInterval;
-    bool spawning; // flag to set if we are spawning or not
-    Coroutine spawnTimerCoroutine, spawnFrequencyCoroutine, waveTimerCoroutine;
+    // Speed variables; editable in editor
+    [SerializeField] private float vertSpeed_max_initial = 4f, vertSpeed_min_initial = 0.1f, vertSpeed_max_limit = 6.0f, vertSpeed_min_limit = 3.0f;
+    [SerializeField] private float vertSpeed_min_increase = 0.05f, vertSpeed_max_increase = 0.1f;
+    [SerializeField] private float vertSpeed_min, vertSpeed_max;
+    // Spawn interval variables
+    [SerializeField] private float initialSpawnInterval = 1.0f, absolute_Min_SpawnInterval = 0.1f, current_spawnInterval;
+    [SerializeField] private int spawnFrequencyIncreaseInterval = 10;
+    // Wave time variables
+    [SerializeField] private float waveTime = 30.0f, waveTime_increasePerLevel = 10.0f, timeBetweenWaves = 5.0f;
+    [SerializeField] int waveTime_remaining;
+    public int waveCounter = 1; // TODO: check if this really needs to be public
+    
+    // Text for debug HUD
     [SerializeField] TextMeshProUGUI waveText, waveTimeText;
-    [SerializeField] int waveTimeRemaining;
-    private bool betweenWaves;
-    public bool gameOver;
+
+    private Coroutine spawnTimerCoroutine, spawnFrequencyCoroutine, waveTimerCoroutine;
+    private bool spawning; // flag to set if we are spawning or not
+    private bool betweenWaves; // so we don't start spawning again when returning from frozen or paused state inbetween waves
+    public bool gameOver; // game over has trigerred but we don't want to change state just yet. TODO: Check if this really needs to be public
+
     private void Start()
     {
         InitialiseVariables();
-
         // Add listener for GameState changes
         GameManager.Instance.OnGameStateChanged.AddListener(HandleGameStateChanged);
         // Starts the Bubble SpawnTimer
         spawning = true;
         spawnTimerCoroutine = StartCoroutine(SpawnTimer());
-        EventBroker.BubblePopped += IncreaseSpeed;
-        EventBroker.BubbleLost += IncreaseSpeed;
+        // Event listeners
+        EventBroker.BubblePopped += OnBubblePopped;
+        EventBroker.BubbleLost += OnBubbleLost;
         EventBroker.MissedEverything += OnMissedEverything;
         EventBroker.GameOverTriggered += OnGameOverTriggered;
     }
 
     private void InitialiseVariables()
     {
+        // Reset variables
         gameOver = false;
         ResetSpeed();
-        spawnInterval = initialSpawnInterval;
-        if (spawnFrequencyCoroutine != null)
-            StopCoroutine(spawnFrequencyCoroutine);
-        waveCounter = 1;
-        UpdateWaveText();
-        if (waveTimerCoroutine != null)
-            StopCoroutine(waveTimerCoroutine);
+        current_spawnInterval = initialSpawnInterval;
         foreach (ObjectPoolItem spawnableObject in ObjectPooler.SharedInstance.itemsToPool)
         {
             spawnableObject.spawnChance = spawnableObject.rarity;
         }
+        waveCounter = 1;
+
+        // Update text for debugHUD
+        UpdateWaveText();
+
+        // Stop coroutines
+        if (spawnFrequencyCoroutine != null)
+            StopCoroutine(spawnFrequencyCoroutine);
+        if (waveTimerCoroutine != null)
+            StopCoroutine(waveTimerCoroutine);
     }
 
     
     private void HandleGameStateChanged(GameManager.GameState currentState, GameManager.GameState previousState)
     {
-        //  Reset speed and intervals on restart game
         if (currentState == GameManager.GameState.PREGAME)
         {
-            Debug.Log("ObjectSpawner: GameState change registered");
             InitialiseVariables();
         }
         else if (currentState == GameManager.GameState.RUNNING && previousState == GameManager.GameState.PREGAME)
         {
-            Debug.Log("ObjectSpawner: GameState change registered");
+            // Clears all spawned objects from the screen
             foreach (GameObject item in ObjectPooler.SharedInstance.pooledObjects)
             {
                 item.SetActive(false);
             }
             spawning = true;
             spawnFrequencyCoroutine = StartCoroutine(SpawnFrequencyIncrease());
-            waveTimerCoroutine =  StartCoroutine(WaveTimer(wave_length_time + waveCounter * waveTimeIncreasePerLevel));
+            waveTimerCoroutine =  StartCoroutine(WaveTimer(waveTime + waveCounter * waveTime_increasePerLevel));
         }
         else if (currentState == GameManager.GameState.ENDGAME || currentState == GameManager.GameState.FROZEN || currentState == GameManager.GameState.PAUSED)
         {
-            Debug.Log("ObjectSpawner: GameState change registered");
             spawning = false;
         }
         else if (currentState == GameManager.GameState.RUNNING && (previousState == GameManager.GameState.FROZEN || previousState == GameManager.GameState.PAUSED))
         {
-            Debug.Log("ObjectSpawner: GameState change registered");
             if (!betweenWaves) spawning = true;
         }
     }
@@ -84,65 +101,83 @@ public class ObjectSpawner : MonoBehaviour
     // Repeating Coroutine which spawns objects
     IEnumerator SpawnTimer()
     {
+        // Do nothing if we're not spawning
         while (!spawning) yield return null;
 
-        yield return new WaitForSeconds(Random.Range(0, spawnInterval));
-
+        // Wait a random period of time between 0 and the current spawnInterval value
+        yield return new WaitForSeconds(Random.Range(0, current_spawnInterval));
+        // loop through each type of spawnable object (i.e bubble, cloud, bird etc)
         foreach (ObjectPoolItem spawnableObject in ObjectPooler.SharedInstance.itemsToPool)
         {
+            // Check if the current wave is equal or higher than the wave the object is first introduced 
             if ( waveCounter >= spawnableObject.waveIntroduced)
             {
+                // Make a random check to see if we spawn the object this time
                 if (Random.Range(0, spawnableObject.spawnChance) == 0)
                 {
                     SpawnObject(spawnableObject.objectToPool.tag);
+                    // Reset the spawnChance variable back to its original rarity value
                     spawnableObject.spawnChance = spawnableObject.rarity;
                 }
                 else
                 {
+                    // decrease the value of spawnChance each time the object isn't spawned
+                    // this creates a sort of controlled randomness
+                    // each time it doesn't spawn, it's more likely to spawn the next time
+                    // up to a point where it will certainly spawn
                     spawnableObject.spawnChance--;
                 }
             }
         }
-
+        // Start the coroutine again
         StartCoroutine(SpawnTimer());
     }
 
     IEnumerator WaveTimer(float time)
     {
+        // Countdown timer updates text for DebugHUD every second
         float _time = time;
-        waveTimeRemaining = (int)_time;
+        waveTime_remaining = (int)_time;
         UpdateWaveText();
         while (_time > 0.0f)
         {
             while (!spawning) yield return null;
             yield return new WaitForSeconds(1);
             _time--;
-            waveTimeRemaining = (int)_time;
+            waveTime_remaining = (int)_time;
             UpdateWaveText();
         }
+        // Once timer hits zero:
+        // Increment wave counter
         waveCounter++;
         UpdateWaveText();
-        spawnInterval = initialSpawnInterval;
+        // Reset the spawn interval
+        current_spawnInterval = initialSpawnInterval;
 
-        // Pause spawning for a certain amount of time and until the screen is clear
+        // Pause spawning for a certain amount of time and until the screen is mostly clear
         spawning = false;
         betweenWaves = true;
-        yield return new WaitForSeconds(timeBetweenWaves); 
+        yield return new WaitForSeconds(timeBetweenWaves);
+        // Check that most of the objects have been cleared from the screen
         while (ActiveObjectsInScene() > 3) yield return null;
+        // Restart spawning
         spawning = true;
         betweenWaves = false;
-        waveTimerCoroutine = StartCoroutine(WaveTimer(wave_length_time + waveTimeIncreasePerLevel * waveCounter));
+        // Restart the wave timer
+        waveTimerCoroutine = StartCoroutine(WaveTimer(waveTime + waveTime_increasePerLevel * waveCounter));
     }
 
+    // Increases the spawn frequency automatically
     IEnumerator SpawnFrequencyIncrease()
     {
         while (!spawning) yield return null;
 
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(spawnFrequencyIncreaseInterval);
         DecreaseSpawnInterval();
         spawnFrequencyCoroutine = StartCoroutine(SpawnFrequencyIncrease());
     }
 
+    // TODO: Remove when sure I don't need it
     IEnumerator PauseSpawning(float seconds)
     {
         spawning = false;
@@ -153,55 +188,71 @@ public class ObjectSpawner : MonoBehaviour
     // Spawns an object from the object pool
     public GameObject SpawnObject(string objectName)
     {
-        if (spawning)
-        {
-            GameObject spawnedObject = ObjectPooler.SharedInstance.GetPooledObject(objectName);
+        // returns null if we're not spawning
+        if (!spawning) return null;
 
-            if (spawnedObject != null)
-            {
-                if (objectName == "Bubble")
-                { 
-                    spawnedObject.GetComponent<Bubble>().Size = Random.Range(0, 4);
-                    spawnedObject.GetComponent<BubbleMovement>().SetVertSpeed(Random.Range(min_VertSpeed, max_VertSpeed));
-                }
-                else if (objectName == "Cloud")
-                {
-                    spawnedObject.GetComponent<Cloud>().Size = Random.Range(0, 3);
-                }
-                spawnedObject.SetActive(true);
-                return spawnedObject;
-            }   
+        // Gets an object from the object pool
+        GameObject spawnedObject = ObjectPooler.SharedInstance.GetPooledObject(objectName);
+
+        // returns null if there were no objects available in the pool
+        if (spawnedObject == null) return null;
+
+        // Sets random size and speed of bubble or random size of cloud
+        // TODO: figure out how to decouple this
+        if (objectName == "Bubble")
+        { 
+            spawnedObject.GetComponent<Bubble>().Size = Random.Range(0, 4);
+            spawnedObject.GetComponent<BubbleMovement>().SetVertSpeed(Random.Range(vertSpeed_min, vertSpeed_max));
         }
-        return null;
+        else if (objectName == "Cloud")
+        {
+            spawnedObject.GetComponent<Cloud>().Size = Random.Range(0, 3);
+        }
+
+        spawnedObject.SetActive(true);
+        return spawnedObject;  
     }
    
+    public void OnBubblePopped()
+    {
+        // TODO: only do this on certain difficulty levels
+        IncreaseSpeed();
+    }
+
+    public void OnBubbleLost()
+    {
+        // TODO: Difficulty levels
+        IncreaseSpeed();
+    }
+
     private void IncreaseSpeed()
     {
-        min_VertSpeed = Mathf.Min(3, min_VertSpeed += 0.05f);
-        max_VertSpeed = Mathf.Min(absolute_Max_VertSpeed, max_VertSpeed += 0.1f);
+        vertSpeed_min = Mathf.Min(vertSpeed_min_limit, vertSpeed_min += vertSpeed_min_increase);
+        vertSpeed_max = Mathf.Min(vertSpeed_max_limit, vertSpeed_max += vertSpeed_max_increase);
     }
 
     private void ResetSpeed()
     {
-        min_VertSpeed = initial_Min_VertSpeed;
-        max_VertSpeed = initial_Max_VertSpeed;
+        vertSpeed_min = vertSpeed_min_initial;
+        vertSpeed_max = vertSpeed_max_initial;
     }    
 
     private void DecreaseSpawnInterval()
     {
-        Debug.Log("ObjectSpawner: DecreaseSpawnInterval()");
         if (!gameOver)
         {
-            spawnInterval = Mathf.Max(spawnInterval -= 0.05f, absolute_Min_SpawnInterval);
+            current_spawnInterval = Mathf.Max(current_spawnInterval -= 0.05f, absolute_Min_SpawnInterval);
         }
     }
 
+    // Wave text just for debug HUD
     void UpdateWaveText()
     {
         waveText.text = "Wave: " + waveCounter;
-        waveTimeText.text = "Wave time: " + waveTimeRemaining;
+        waveTimeText.text = "Wave time: " + waveTime_remaining;
     }
 
+    // Returns a count of the number of active objects in the scene
     private int ActiveObjectsInScene()
     {
         int count = 0;
@@ -216,12 +267,14 @@ public class ObjectSpawner : MonoBehaviour
     public void OnGameOverTriggered()
     {
         gameOver = true;
-        LeanTween.value(spawnInterval, 0.01f, 0.5f).setOnUpdate((float val) =>
+        LeanTween.value(current_spawnInterval, 0.01f, 0.5f).setOnUpdate((float val) =>
         {
-            spawnInterval = val;
+            current_spawnInterval = val;
         });
     }
     
+    // Clicking and missing makes the game get harder
+    // TODO: Difficulty levels
     public void OnMissedEverything()
     {
         DecreaseSpawnInterval();

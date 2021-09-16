@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Pause button needs to be held down for a certain time for it to trigger
+// This is to avoid it being accidentally pressed when popping bubbles
 public class PauseButton : MonoBehaviour
 {
     float timer = 0;

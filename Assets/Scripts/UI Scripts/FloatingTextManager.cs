@@ -23,7 +23,7 @@ public class FloatingTextManager : MonoBehaviour
         FloatingText floatingText = GetFloatingText();
 
         floatingText.txt.text = msg;
-        // floatingText.txt.fontSize = fontSize;
+        // floatingText.txt.fontSize = fontSize; // Disable this option until i figure out why it isn't working
         floatingText.txt.color = color;
 
         floatingText.go.transform.position = Camera.main.WorldToScreenPoint(position); // Transfer world space to screen space to use in ui
