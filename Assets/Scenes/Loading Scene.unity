@@ -489,10 +489,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadingScreen: {fileID: 1432996818}
-  startButton: {fileID: 262031288}
   loadingText: {fileID: 141573249}
   loadingProgressBar: {fileID: 791644297}
-  alphaCanvas: {fileID: 141573253}
+  LoadingScreenAlphaCanvas: {fileID: 141573253}
   OnGameStateChanged:
     m_PersistentCalls:
       m_Calls: []

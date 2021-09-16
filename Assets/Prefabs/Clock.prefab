@@ -135,8 +135,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5bbb32f8dddcb44dbd254307c6886d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentState: 0
   audioSource: {fileID: 0}
   onClickSounds: []
+  objectHit: 0
   timeToFreeze: 5
   breakSounds:
   - {fileID: 8300000, guid: 77d2bacc6ca5c3240a5496d9b492fb0c, type: 3}
