@@ -8,7 +8,7 @@ public class Cloud : ObjectOnClick
     [SerializeField] float timeDelayBeforeDestroy;
     [SerializeField] float[] scales; // Array of scales for different sized clouds
     [SerializeField] private GameObject particlePrefab; // particle effect prefab
-    ObjectSpawner objectSpawner; // Needed to spawn smalller clouds
+    ObjectSpawner objectSpawner; // Needed to spawn smaller clouds
 
     // Property 'size' is an integer value signifying the different positions in the scales array
     // Setting the size uses the relevant scale values and applies them to the transform

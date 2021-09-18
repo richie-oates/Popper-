@@ -12,6 +12,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
+    private int screenWidth, screenHeight;
     private Vector2 screenBounds;
     private AsyncOperation screenLoading;
     [SerializeField] GameObject loadingScreen, loadingText;
@@ -44,7 +45,11 @@ public class GameManager : Singleton<GameManager>
 
     public Vector2 ScreenBounds
     {
-        get { return screenBounds; }
+        get 
+        { 
+            screenBounds = GetScreenBounds(); 
+            return screenBounds; 
+        }
         private set { screenBounds = value; }
     }
     public GameState CurrentGameState
@@ -68,11 +73,18 @@ public class GameManager : Singleton<GameManager>
 #if UNITY_WEBGL || UNITY_ANDROID
         Application.targetFrameRate = -1;
 #endif
+        screenBounds = GetScreenBounds();
 
-        // Get the screenbounds from the main camera
-        screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
         // Activate loading screen
         loadingScreen.gameObject.SetActive(true);
+    }
+
+    public Vector2 GetScreenBounds()
+    {
+        screenWidth = Screen.width;
+        screenHeight = Screen.height;
+        // Get the screenbounds from the main camera
+        return Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
     }
 
     private void Start()
@@ -139,6 +151,19 @@ public class GameManager : Singleton<GameManager>
                 QuitGameQuery();
             }
         }
+
+        // Check to see if screen size changed
+        if (screenHeight != Screen.height || screenWidth != Screen.width)
+        {
+            ScreenSizeChanged();
+        }
+    }
+
+    private void ScreenSizeChanged()
+    {
+        GetScreenBounds();
+        EventBroker.CallScreenSizeChanged(screenBounds);
+        Debug.Log("New Screen size: " + screenWidth + " x " + screenHeight);
     }
 
     public void PauseToggle()
