@@ -66,7 +66,7 @@ The Structure of the Game
 
 		ObjectSpawner:
 			- I think this currently does too much and will need refactoring in the future
-			- It spawns objects at intervals based on the rarity of the object and the current wave(level) that we're on
+			- It spawns objects at intervals based on the rarity(set in the ObjectPooler) of the object and the current wave that we're on
 			- The interval decreases in time but also if we click and miss or let bubbles fall off the screeen
 			- Sets the random range of speed for bubbles as well as size of bubbles and clouds
 			- Listens for events from other scripts to adjust difficulty or trigger game over
@@ -79,3 +79,22 @@ The Structure of the Game
 				- Performs different function specific to the object type
 			- OutOfBounds script deactivates if it goes off the screen, and broadcasts an event if it was a bubble
 			- Each has its own movement script as they all move in different ways
+			- Spawn location set when enabled based on object type and screen size
+
+		PlayerScore:
+			- Handles the score, combo level and danger level and displays them on the HUD (will look to decouple this in the future)
+			- Triggers game over sequence once the danger level reaches its maximum
+
+	PAUSE:
+		- Stops gameplay and displays a pause menu
+		- Can adjust settings, return to pregame, or resume game
+		- Resume game returns to previous game state i.e RUNNING or FROZEN
+
+	GAME OVER:
+		- Shows the game over menu with score and high score
+		- From here you can return to PREGAME
+		
+	QUIT GAME:
+		- Accessed by pressing escape or the Android back button from any state except RUNNING (if in RUNNING state it moves to PAUSE state)
+		- Displays a warning screen to confirm if you want to quit
+		- Cancelling returns to previous state
