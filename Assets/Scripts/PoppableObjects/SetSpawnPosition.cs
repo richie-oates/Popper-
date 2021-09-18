@@ -25,12 +25,14 @@ public class SetSpawnPosition : MonoBehaviour
         screenBounds = GameManager.Instance.ScreenBounds;
         halfObjectHeight = GetComponent<Collider2D>().bounds.size.y / 2;
         halfObjectWidth = GetComponent<Collider2D>().bounds.size.x / 2;
-
-        transform.position = GetStartPos();
     }
 
     private void OnEnable()
     {
+        // Get reference to ScreenBounds
+        screenBounds = GameManager.Instance.ScreenBounds;
+        halfObjectHeight = GetComponent<Collider2D>().bounds.size.y / 2;
+        halfObjectWidth = GetComponent<Collider2D>().bounds.size.x / 2;
         transform.position = GetStartPos();
     }
 

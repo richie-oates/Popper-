@@ -17,8 +17,13 @@ public class BubbleMovement : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         // Add listener for GameState changes
         GameManager.Instance.OnGameStateChanged.AddListener(HandleGameStateChanged);
+        EventBroker.ScreenSizeChanged += OnScreenSizeChanged; 
     }
 
+    public void OnScreenSizeChanged(Vector3 newScreenBounds)
+    {
+        screenBounds = newScreenBounds;
+    }
     private void HandleGameStateChanged(GameManager.GameState currentState, GameManager.GameState previousState)
     {
         if (currentState == GameManager.GameState.FROZEN || currentState == GameManager.GameState.PAUSED)

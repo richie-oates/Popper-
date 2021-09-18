@@ -60,4 +60,11 @@ public class EventBroker
     {
         ComboLevelUp?.Invoke();
     }
+
+    public static event Action<Vector3> ScreenSizeChanged;
+
+    public static void CallScreenSizeChanged(Vector3 newScreenBounds)
+    {
+        ScreenSizeChanged?.Invoke(newScreenBounds);
+    }
 }
