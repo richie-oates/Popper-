@@ -6,7 +6,10 @@ public class Cloud : ObjectOnClick
 {
     private int size;
     [SerializeField] float timeDelayBeforeDestroy;
-    [SerializeField] float[] scales; // Array of scales for different sized clouds
+    [SerializeField] float[] scales
+        
+        
+        ; // Array of scales for different sized clouds
     [SerializeField] private GameObject particlePrefab; // particle effect prefab
     ObjectSpawner objectSpawner; // Needed to spawn smaller clouds
 

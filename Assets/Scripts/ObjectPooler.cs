@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Creates a pool of game objects which we can activate and deactivate as needed
 [System.Serializable]
 public class ObjectPoolItem
 {

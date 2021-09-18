@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class PlayerScore : Singleton<PlayerScore>
 {
     int score = 0, highScore = 0, highCombo = 0, bubblesLost, bubblesHit, combo = 0, comboLevel = 0, multiplier = 1;
-    int maxBubblesLost = 8, warningLevel = 6, timeForMultiplier = 5;
+    int maxBubblesLost = 8, warningLevel = 6, timeForMultiplier = 5, dangerLevelPeriod = 5;
     [SerializeField] TextMeshProUGUI scoreText, highScoreText, bubbleLostText, comboText, comboLevelText, multiplierText;
     [SerializeField] Slider dangerLevelSlider, comboLevelSlider;
     [SerializeField] GameObject dangerWarningText;
@@ -76,7 +76,7 @@ public class PlayerScore : Singleton<PlayerScore>
         {
             InitialiseVariables();
         }
-        if (currentState == GameManager.GameState.ENDGAME)
+        if (arcadeMode && currentState == GameManager.GameState.ENDGAME)
         {
             //Save high score to player prefs
             PlayerPrefs.SetInt("highscore", highScore);
@@ -90,7 +90,7 @@ public class PlayerScore : Singleton<PlayerScore>
         comboLevel = 1;
         comboLevelText.text = "Combo";
         comboLevelSlider.value = 0; 
-        comboText.text = "Combo: " + combo;
+        comboText.text = "Combo: " + combo; // DebugHUD
     }
 
     // Updates combo, score and high score and displays them
@@ -145,7 +145,7 @@ public class PlayerScore : Singleton<PlayerScore>
                 comboLevelText.text = "X" + combo + " Combo";
             }
 
-            comboText.text = "Combo: " + combo; // For debugging
+            comboText.text = "Combo: " + combo; // For DebugHUD
 
             if (objectHit.CompareTag("Bird"))
             {
@@ -157,16 +157,20 @@ public class PlayerScore : Singleton<PlayerScore>
     // Combo multiplier gets doubled for a certain time
     IEnumerator MultiplierTimer(float time)
     {
+        // double the multiplier
         multiplier *= 2;
+        // display text
         multiplierText.text = "x" + multiplier;
         multiplierText.gameObject.SetActive(true);
         yield return new WaitForSeconds(time);
+        // reduce the multiplier
         multiplier /= 2;
+        // adjust text
         multiplierText.text = "x" + multiplier;
+        // multiplier can stack if we hit multiple birds so we need to check it's back to normal before hiding the text again
         if (multiplier <= 1)
         {
             multiplierText.gameObject.SetActive(false);
-
         }
     }
 
@@ -178,9 +182,9 @@ public class PlayerScore : Singleton<PlayerScore>
         if (arcadeMode && !gameOver)
         {
             bubblesLost++;
-            bubbleLostText.text = "Bubbles Lost: " + bubblesLost;
+            bubbleLostText.text = "Bubbles Lost: " + bubblesLost; // DebugHUD
             DangerLevelChange();
-            StartCoroutine(RemoveBubbleFromCount(5));
+            StartCoroutine(RemoveBubbleFromCount(dangerLevelPeriod));
         }
     }
 
@@ -191,26 +195,29 @@ public class PlayerScore : Singleton<PlayerScore>
         {
             currentMisses++;
             DangerLevelChange();
-            StartCoroutine(RemoveMissFromCount(5));
+            StartCoroutine(RemoveMissFromCount(dangerLevelPeriod));
         }
     }
 
     public void DangerLevelChange()
     {
         if (gameOver) return;
+        // Updates the danget levele slider
         dangerLevelSlider.maxValue = maxBubblesLost;
         dangerLevel = bubblesLost + currentMisses;
         dangerLevelSlider.value = dangerLevel;
+        // Hides warning text at certain level
         if (dangerLevel < warningLevel)
         {
             dangerWarningText.SetActive(false);
         }
+        // Displays warning text at certain level
         else if (dangerLevel >= warningLevel)
         {
             dangerWarningText.SetActive(true);
+            // Triggers game over
             if (dangerLevel >= maxBubblesLost)
             {
-                gameOver = true;
                 StartCoroutine(GameOverSequence());
             }
         }
@@ -218,8 +225,10 @@ public class PlayerScore : Singleton<PlayerScore>
     }
 
     // Triggers a game over sequence where hundreds of bubbles are spawned at once
+    // Then we update game state to show the game over menu screen
     IEnumerator GameOverSequence()
     {
+        gameOver = true;
         EventBroker.CallGameOverTriggered();
         yield return new WaitForSeconds(3.0f);
         GameManager.Instance.UpdateState(GameManager.GameState.ENDGAME);
@@ -232,7 +241,6 @@ public class PlayerScore : Singleton<PlayerScore>
         {
             bubblesLost--;
             if (bubblesLost < 0) bubblesLost = 0;
-            bubbleLostText.text = "Bubbles Lost: " + bubblesLost;
             DangerLevelChange();
         }
     }

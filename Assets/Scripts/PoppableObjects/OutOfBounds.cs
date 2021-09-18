@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Disables objects which go off the screen
+// Broadcasts an event if the object is a bubble
+// Listens for screen size changed events
 public class OutOfBounds : MonoBehaviour
 {
     protected Vector3 screenBounds;
@@ -9,6 +12,11 @@ public class OutOfBounds : MonoBehaviour
 
     // Start is called before the first frame update
     protected virtual void Start()
+    {
+        EventBroker.ScreenSizeChanged += OnScreenSizeChanged;
+    }
+
+    private void OnEnable()
     {
         // Get reference to ScreenBounds
         screenBounds = GameManager.Instance.ScreenBounds;
@@ -28,5 +36,10 @@ public class OutOfBounds : MonoBehaviour
             }
             gameObject.SetActive(false);
         }
+    }
+
+    public void OnScreenSizeChanged(Vector3 newScreenBounds)
+    {
+        screenBounds = newScreenBounds;
     }
 }
