@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BubbleMovement : MonoBehaviour
 {
-    private bool clockFrozen;
     protected Vector3 screenBounds;
     protected Coroutine coroutine;
     [SerializeField] protected float vertSpeed, horizontalSpeed, newHorizontalSpeed, maxHorizontalSpeed = 0.4f;
