@@ -7,7 +7,7 @@ public class BubbleMovement : MonoBehaviour
     protected Vector3 screenBounds;
     protected Coroutine coroutine;
     [SerializeField] protected float vertSpeed, horizontalSpeed, newHorizontalSpeed, maxHorizontalSpeed = 0.4f;
-    bool bouncing, movementFrozen = false;
+    [SerializeField] bool bouncing, movementFrozen = false;
     SpriteRenderer spriteRenderer;
 
     private void Start()
@@ -45,24 +45,22 @@ public class BubbleMovement : MonoBehaviour
         vertSpeed = -speed;
     }
 
-    // Update is called once per frame
-    protected void Update()
+    protected void FixedUpdate()
     {
-        if (!movementFrozen)
-        {
-            transform.Translate(horizontalSpeed * Time.deltaTime, vertSpeed * Time.deltaTime, 0);
+        if (movementFrozen) return;
 
-            if (Mathf.Abs(transform.position.x) > screenBounds.x - spriteRenderer.sprite.bounds.extents.x && !bouncing)
-            {
-                bouncing = true;
-                StopCoroutine(coroutine);
-                newHorizontalSpeed = -horizontalSpeed;
-                StartCoroutine(ChangeValueOverTime(horizontalSpeed, newHorizontalSpeed, 1.5f));
-            }
-            else if (Mathf.Abs(transform.position.x) < screenBounds.x)
-            {
-                bouncing = false;
-            }
+        transform.Translate(horizontalSpeed * Time.deltaTime, vertSpeed * Time.deltaTime, 0);
+
+        if (!bouncing && Mathf.Abs(transform.position.x) > (screenBounds.x - spriteRenderer.sprite.bounds.extents.x))
+        {
+            bouncing = true;
+            StopCoroutine(coroutine);
+            newHorizontalSpeed = -horizontalSpeed;
+            StartCoroutine(ChangeValueOverTime(horizontalSpeed, newHorizontalSpeed, 1.5f));
+        }
+        else if (bouncing && Mathf.Abs(transform.position.x) < (screenBounds.x - spriteRenderer.sprite.bounds.extents.x))
+        {
+            bouncing = false;
         }
     }
 

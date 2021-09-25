@@ -8,6 +8,7 @@ public class CloudMovement : MonoBehaviour
     protected Coroutine coroutine;
     [SerializeField] float minHorizontalSpeed, maxHorizontalSpeed, horizontalSpeed, newHorizontalSpeed;
     [SerializeField] float minVerticalSpeed, maxVerticalSpeed, verticalSpeed, newVerticalSpeed;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -16,6 +17,7 @@ public class CloudMovement : MonoBehaviour
 
     private void OnEnable()
     {
+        screenBounds = GameManager.Instance.ScreenBounds;
         SetStartSpeed();
         coroutine = StartCoroutine(ChangeDirection());
         transform.position = new Vector3(transform.position.x, transform.position.y, -1.0f);

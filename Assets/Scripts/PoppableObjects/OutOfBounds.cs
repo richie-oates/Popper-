@@ -27,8 +27,9 @@ public class OutOfBounds : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        if (Mathf.Abs(transform.position.x) > screenBounds.x + halfObjectWidth + 1.0f ||
-            Mathf.Abs(transform.position.y) > screenBounds.y + halfObjectHeight + 1.0f)
+        if (Mathf.Abs(transform.position.x) > screenBounds.x + 1.1f*halfObjectWidth || transform.position.y > screenBounds.y + 1.1f*halfObjectHeight) 
+                gameObject.SetActive(false);
+        if (transform.position.y < -screenBounds.y - 1.1f*halfObjectHeight)
         {
             if (GameManager.Instance.CurrentGameState == GameManager.GameState.RUNNING && gameObject.CompareTag("Bubble"))
             {

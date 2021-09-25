@@ -28,6 +28,7 @@ public class BubbleOnClick : ObjectOnClick
         playerScore.UpdateScore(bubbleProperties.Value, gameObject);
     }
 
+    // Used by the animator once the popping animation has finished
     public void Deactivate()
     {
         gameObject.SetActive(false);

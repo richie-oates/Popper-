@@ -5,6 +5,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+// TODO: Needs refactoring and splitting into smaller scripts
+//
 public class PlayerScore : Singleton<PlayerScore>
 {
     int score = 0, highScore = 0, highCombo = 0, bubblesLost, bubblesHit, combo = 0, comboLevel = 0, multiplier = 1;
