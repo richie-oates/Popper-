@@ -39,8 +39,8 @@ public class PlayerScore : Singleton<PlayerScore>
         // Listener for GameMode Changes
         EventBroker.ChangeGameMode += OnChangeGameMode;
 
-        // Add listeners for missed bubbles and hit objects
-        EventBroker.BubbleLost += OnBubbleLost;
+        // Add listeners for lost objects, hit objects and misses
+        EventBroker.ObjectLost += OnObjectLost;
         EventBroker.HitObject += OnHitObject;
         EventBroker.MissedEverything += OnMissedEverything;
 
@@ -176,12 +176,9 @@ public class PlayerScore : Singleton<PlayerScore>
         }
     }
 
-    // Keeps a tally of bubbles which go off the screen in the last x seconds
-    // Changes the danger level based on this amount
-    // Calls game over if the max is reached
-    public void OnBubbleLost()
+    public void OnObjectLost(OutOfBoundsEventArgs args)
     {
-        if (arcadeMode && !gameOver)
+        if (args.objectTag == "Bubble" && arcadeMode && !gameOver)
         {
             bubblesLost++;
             bubbleLostText.text = "Bubbles Lost: " + bubblesLost; // DebugHUD

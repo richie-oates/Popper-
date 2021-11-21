@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class EventBroker
 {
@@ -12,11 +10,11 @@ public class EventBroker
         BubblePopped?.Invoke();
     }
 
-    public static event Action BubbleLost;
+    public static event Action<OutOfBoundsEventArgs> ObjectLost;
 
-    public static void CallBubbleLost()
+    public static void CallObjectLost(OutOfBoundsEventArgs args)
     {
-        BubbleLost?.Invoke();
+        ObjectLost.Invoke(args);
     }
 
     public static event Action<GameObject> HitObject;

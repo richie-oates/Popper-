@@ -15,6 +15,7 @@ public class SetSpawnPosition : MonoBehaviour
 
     [SerializeField] SpawnPosition spawnPosition;
     Vector3 screenBounds;
+
     float halfObjectHeight;
     float halfObjectWidth;
 
@@ -36,16 +37,16 @@ public class SetSpawnPosition : MonoBehaviour
         transform.position = GetStartPos();
     }
 
-    // Returns position with a random x position and y position just above the screen bounds
+    
     Vector2 GetStartPos()
     {
         if (spawnPosition == SpawnPosition.TOP)
         {
-            return new Vector3(Random.Range(-screenBounds.x + halfObjectWidth, screenBounds.x - halfObjectWidth), halfObjectHeight + screenBounds.y, 0);
+            return new Vector3(RandomX(), halfObjectHeight + screenBounds.y, 0);
         }
         else if (spawnPosition == SpawnPosition.BOTTOM)
         {
-            return new Vector3(Random.Range(-screenBounds.x + halfObjectWidth, screenBounds.x - halfObjectWidth), -halfObjectHeight - screenBounds.y, 0);
+            return new Vector3(RandomX(), -halfObjectHeight - screenBounds.y, 0);
         }
         else if (spawnPosition == SpawnPosition.SIDES)
         {
@@ -60,12 +61,23 @@ public class SetSpawnPosition : MonoBehaviour
         }
         if (spawnPosition == SpawnPosition.LEFT)
         {
-            return new Vector3(-(halfObjectWidth + screenBounds.x), Random.Range(-screenBounds.y + halfObjectHeight, screenBounds.y - halfObjectHeight), 0);
+            return new Vector3(-(halfObjectWidth + screenBounds.x), RandomY(), 0);
+            spawnPosition = SpawnPosition.SIDES;
         }
         else
         {
-            return new Vector3((halfObjectWidth + screenBounds.x), Random.Range(-screenBounds.y + halfObjectHeight, screenBounds.y - halfObjectHeight), 0);
+            return new Vector3((halfObjectWidth + screenBounds.x), RandomY(), 0);
+            spawnPosition = SpawnPosition.SIDES;
         }
     }
 
+    float RandomX()
+    {
+        return Random.Range(-screenBounds.x + halfObjectWidth, screenBounds.x - halfObjectWidth);
+    }
+
+    float RandomY()
+    {
+        return Random.Range(-screenBounds.y + halfObjectHeight, screenBounds.y - halfObjectHeight);
+    }
 }

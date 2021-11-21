@@ -43,7 +43,7 @@ public class ObjectSpawner : MonoBehaviour
         spawnTimerCoroutine = StartCoroutine(SpawnTimer());
         // Event listeners
         EventBroker.BubblePopped += OnBubblePopped;
-        EventBroker.BubbleLost += OnBubbleLost;
+        EventBroker.ObjectLost += OnObjectLost;
         EventBroker.MissedEverything += OnMissedEverything;
         EventBroker.GameOverTriggered += OnGameOverTriggered;
     }
@@ -219,10 +219,11 @@ public class ObjectSpawner : MonoBehaviour
         IncreaseSpeed();
     }
 
-    public void OnBubbleLost()
+    public void OnObjectLost(OutOfBoundsEventArgs args)
     {
         // TODO: Difficulty levels
-        IncreaseSpeed();
+        if (args.objectTag == "Bubble" && args.screenSide == ScreenSides.Side.BOTTOM)
+            IncreaseSpeed();
     }
 
     private void IncreaseSpeed()

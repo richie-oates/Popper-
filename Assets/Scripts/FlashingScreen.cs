@@ -3,12 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 
+
 public class FlashingScreen : MonoBehaviour
 {
     Animation flashing;
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Color baseColor;
-    // Start is called before the first frame update
+
     void Start()
     {
         flashing = GetComponent<Animation>();

@@ -18,6 +18,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] GameObject loadingScreen, loadingText;
     [SerializeField] ProgressBar loadingProgressBar;
     [SerializeField] CanvasGroup LoadingScreenAlphaCanvas;
+    
     public enum GameState
     {
         PREGAME,
@@ -42,7 +43,6 @@ public class GameManager : Singleton<GameManager>
     [System.Serializable] public class EventGameState : UnityEvent<GameState, GameState> { }
     public EventGameState OnGameStateChanged;
     
-
     public Vector2 ScreenBounds
     {
         get 

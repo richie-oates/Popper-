@@ -108,6 +108,8 @@ MonoBehaviour:
   horizontalSpeed: 0
   newHorizontalSpeed: 0
   maxHorizontalSpeed: 0.5
+  bouncing: 0
+  movementFrozen: 0
 --- !u!114 &2989138494568577573
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,11 +122,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 663a2cb0b5d9fb94699f729672d8cc8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentState: 0
   audioSource: {fileID: 0}
   onClickSounds:
   - {fileID: 8300000, guid: 3576a358b00d4194b9d255b3f3ab8b12, type: 3}
   - {fileID: 8300000, guid: 150e6d050ee21414b806b78f60c848fe, type: 3}
   - {fileID: 8300000, guid: c6d2b02436c5aee49886e1a71380f656, type: 3}
+  objectHit: 0
 --- !u!58 &-7284363689949527013
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -153,6 +157,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 361d88c4df037b941b9a6929138ea77c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  screenBounds: {fileID: 11400000, guid: 6dc0d055050a5cd429059d661ad93748, type: 2}
+  top: 0
+  bottom: 1
+  left: 0
+  right: 0
+  offsetPercentage: 6.4
+  offset: 0
 --- !u!114 &4517501088645977778
 MonoBehaviour:
   m_ObjectHideFlags: 0

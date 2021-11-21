@@ -23,9 +23,9 @@ public class BubbleOnClick : ObjectOnClick
 
     protected override void OnClickOnObject()
     {
-        base.OnClickOnObject();
         animator.SetTrigger("pop");       
         playerScore.UpdateScore(bubbleProperties.Value, gameObject);
+        base.OnClickOnObject();
     }
 
     // Used by the animator once the popping animation has finished

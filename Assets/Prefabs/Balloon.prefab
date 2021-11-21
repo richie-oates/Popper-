@@ -258,7 +258,7 @@ SpriteRenderer:
   m_Size: {x: 2.04, y: 2.56}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &358436107126524856
@@ -383,6 +383,8 @@ MonoBehaviour:
   horizontalSpeed: 0
   newHorizontalSpeed: 0
   maxHorizontalSpeed: 0.7
+  bouncing: 0
+  movementFrozen: 0
 --- !u!58 &7351375234275137599
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -411,9 +413,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8271db610da9dfa47a69f865828448ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentState: 0
   audioSource: {fileID: 0}
   onClickSounds:
   - {fileID: 8300000, guid: f61f3d63a531b8e43a0383863387145b, type: 3}
+  objectHit: 0
   explosionRadius: 4
 --- !u!114 &-5325293677046073983
 MonoBehaviour:
@@ -427,6 +431,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 361d88c4df037b941b9a6929138ea77c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  screenBounds: {fileID: 11400000, guid: 6dc0d055050a5cd429059d661ad93748, type: 2}
+  top: 1
+  bottom: 1
+  left: 1
+  right: 1
+  offsetPercentage: 10
 --- !u!114 &-6894467756123852886
 MonoBehaviour:
   m_ObjectHideFlags: 0

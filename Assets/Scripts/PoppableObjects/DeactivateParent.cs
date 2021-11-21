@@ -8,5 +8,4 @@ public class DeactivateParent : MonoBehaviour
     {
         transform.parent.gameObject.SetActive(false);
     }
-
 }

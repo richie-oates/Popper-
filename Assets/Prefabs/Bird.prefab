@@ -117,11 +117,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcd800f752132e9408ef2c3c8d7c648f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentState: 0
   audioSource: {fileID: 0}
   onClickSounds:
   - {fileID: 8300000, guid: 523cdaae8d5dcf84495616e21db5f18b, type: 3}
   - {fileID: 8300000, guid: f711a90b72cda8d4ebc04987c5266ff3, type: 3}
   - {fileID: 8300000, guid: 446f09dea48dc184f965d00e9b110e5f, type: 3}
+  objectHit: 0
 --- !u!114 &3041176021964922331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,6 +136,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 361d88c4df037b941b9a6929138ea77c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  screenBounds: {fileID: 11400000, guid: 6dc0d055050a5cd429059d661ad93748, type: 2}
+  top: 1
+  bottom: 1
+  left: 1
+  right: 1
+  offsetPercentage: 1
 --- !u!114 &7973334001391835046
 MonoBehaviour:
   m_ObjectHideFlags: 0

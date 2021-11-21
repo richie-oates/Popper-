@@ -1,46 +1,83 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-// Disables objects which go off the screen
-// Broadcasts an event if the object is a bubble
-// Listens for screen size changed events
+
+public class OutOfBoundsEventArgs // Class to hold variables which we want to pass with the event
+{
+    public string objectTag;
+    public ScreenSides.Side screenSide;
+
+    public OutOfBoundsEventArgs(string _objectTag, ScreenSides.Side side)
+    {
+        objectTag = _objectTag;
+        screenSide = side;
+    }
+}
+
+// Checks to see if an object leaves the bounds of the screen
+// Disables objects which go out of bounds
+// Broadcasts an event, passing the object tag and which side of the boundary it left from
+[RequireComponent(typeof( Vector2Variable))]
 public class OutOfBounds : MonoBehaviour
 {
-    protected Vector3 screenBounds;
-    protected float halfObjectHeight, halfObjectWidth;
+    [Tooltip("Drop screenBounds scriptable object here")]
+    public Vector2Variable screenBounds; // screenBounds is stored as a scriptable object
+    private float halfObjectHeight, halfObjectWidth;
+    
+    // toggle in inspector to set which sides of the screen we want to check for objects going out of bounds
+    [Tooltip("Out of bounds applies to this side of the screen")]
+    [SerializeField] private bool top = true, bottom = true, left = true, right = true;
 
-    // Start is called before the first frame update
-    protected virtual void Start()
-    {
-        EventBroker.ScreenSizeChanged += OnScreenSizeChanged;
-    }
+    [Tooltip("How far off the screen the object must go (as a percentage of screen size) before out of bounds is triggered")]
+    [SerializeField] [Range(0, 10)] private float offsetPercentage = 1f;
+    private float offset;
+
+    // Enum indicating which side of the screen the object went off
+    private ScreenSides.Side directionObjectWentOutOfBounds;
 
     private void OnEnable()
     {
-        // Get reference to ScreenBounds
-        screenBounds = GameManager.Instance.ScreenBounds;
+        // Get object sizes
         halfObjectHeight = GetComponent<Collider2D>().bounds.size.y / 2;
         halfObjectWidth = GetComponent<Collider2D>().bounds.size.x / 2;
+        offset = 1.0f + offsetPercentage / 100f;
     }
 
-    // Update is called once per frame
-    protected virtual void Update()
+    private void Update()
     {
-        if (Mathf.Abs(transform.position.x) > screenBounds.x + 1.1f*halfObjectWidth || transform.position.y > screenBounds.y + 1.1f*halfObjectHeight) 
-                gameObject.SetActive(false);
-        if (transform.position.y < -screenBounds.y - 1.1f*halfObjectHeight)
+        if (ObjectWentOutOfBounds())
         {
-            if (GameManager.Instance.CurrentGameState == GameManager.GameState.RUNNING && gameObject.CompareTag("Bubble"))
-            {
-                EventBroker.CallBubbleLost();
-            }
+            EventBroker.CallObjectLost(new OutOfBoundsEventArgs(gameObject.tag, directionObjectWentOutOfBounds));
             gameObject.SetActive(false);
         }
     }
 
-    public void OnScreenSizeChanged(Vector3 newScreenBounds)
+    bool ObjectWentOutOfBounds()
     {
-        screenBounds = newScreenBounds;
+        if (ObjectWentOffBottom)
+        {
+            directionObjectWentOutOfBounds = ScreenSides.Side.BOTTOM;
+            return true;
+        }
+        if (ObjectWentOffTop)
+        {
+            directionObjectWentOutOfBounds = ScreenSides.Side.TOP;
+            return true;
+        }
+        if (ObjectWentOffLeft)
+        {
+            directionObjectWentOutOfBounds = ScreenSides.Side.LEFT;
+            return true;
+        }
+        if (ObjectWentOffRight)
+        {
+            directionObjectWentOutOfBounds = ScreenSides.Side.RIGHT;
+            return true;
+        }
+        return false;
     }
+
+    bool ObjectWentOffTop => top && transform.position.y > (screenBounds.Value.y * offset + halfObjectHeight);
+    bool ObjectWentOffBottom => bottom && transform.position.y < (-screenBounds.Value.y * offset - halfObjectHeight);
+    bool ObjectWentOffLeft => left && transform.position.x > (-screenBounds.Value.x * offset - halfObjectWidth);
+    bool ObjectWentOffRight => right && transform.position.x > (screenBounds.Value.x * offset + halfObjectWidth);
 }
