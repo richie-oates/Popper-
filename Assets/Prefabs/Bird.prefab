@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 8128370502433802280}
   - component: {fileID: 8866408615119694941}
   - component: {fileID: -7031760539112819728}
+  - component: {fileID: 7281821005593922975}
   - component: {fileID: 3041176021964922331}
   - component: {fileID: 7973334001391835046}
-  - component: {fileID: 7281821005593922975}
   - component: {fileID: 73033681}
   - component: {fileID: 8608047217773972269}
   m_Layer: 0
@@ -124,6 +124,23 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f711a90b72cda8d4ebc04987c5266ff3, type: 3}
   - {fileID: 8300000, guid: 446f09dea48dc184f965d00e9b110e5f, type: 3}
   objectHit: 0
+--- !u!114 &7281821005593922975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8403101809149557388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e4cc2c6d097af84f8fdf88ae89d41f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minHorizontalSpeed: 2.5
+  maxHorizontalSpeed: 5
+  horizontalSpeed: 0
+  fallingSpeed: 8
+  birdHit: 0
 --- !u!114 &3041176021964922331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,6 +159,7 @@ MonoBehaviour:
   left: 1
   right: 1
   offsetPercentage: 1
+  DebugModeOn: 0
 --- !u!114 &7973334001391835046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,23 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPosition: 2
---- !u!114 &7281821005593922975
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8403101809149557388}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e4cc2c6d097af84f8fdf88ae89d41f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minHorizontalSpeed: 2.5
-  maxHorizontalSpeed: 5
-  horizontalSpeed: 0
-  fallingSpeed: 8
-  birdHit: 0
+  screenBounds: {fileID: 11400000, guid: 6dc0d055050a5cd429059d661ad93748, type: 2}
 --- !u!95 &73033681
 Animator:
   serializedVersion: 3

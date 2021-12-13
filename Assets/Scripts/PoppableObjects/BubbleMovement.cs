@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BubbleMovement : MonoBehaviour
 {
-    protected Vector3 screenBounds;
+    public Vector2Variable screenBounds;
     protected Coroutine coroutine;
     [SerializeField] protected float vertSpeed, horizontalSpeed, newHorizontalSpeed, maxHorizontalSpeed = 0.4f;
     [SerializeField] bool bouncing, movementFrozen = false;
@@ -12,17 +12,11 @@ public class BubbleMovement : MonoBehaviour
 
     private void Start()
     {
-        screenBounds = GameManager.Instance.ScreenBounds;
         spriteRenderer = GetComponent<SpriteRenderer>();
         // Add listener for GameState changes
         GameManager.Instance.OnGameStateChanged.AddListener(HandleGameStateChanged);
-        EventBroker.ScreenSizeChanged += OnScreenSizeChanged; 
     }
 
-    public void OnScreenSizeChanged(Vector3 newScreenBounds)
-    {
-        screenBounds = newScreenBounds;
-    }
     private void HandleGameStateChanged(GameManager.GameState currentState, GameManager.GameState previousState)
     {
         if (currentState == GameManager.GameState.FROZEN || currentState == GameManager.GameState.PAUSED)
@@ -51,14 +45,14 @@ public class BubbleMovement : MonoBehaviour
 
         transform.Translate(horizontalSpeed * Time.deltaTime, vertSpeed * Time.deltaTime, 0);
 
-        if (!bouncing && Mathf.Abs(transform.position.x) > (screenBounds.x - spriteRenderer.sprite.bounds.extents.x))
+        if (!bouncing && Mathf.Abs(transform.position.x) > (screenBounds.Value.x - spriteRenderer.sprite.bounds.extents.x))
         {
             bouncing = true;
             StopCoroutine(coroutine);
             newHorizontalSpeed = -horizontalSpeed;
             StartCoroutine(ChangeValueOverTime(horizontalSpeed, newHorizontalSpeed, 1.5f));
         }
-        else if (bouncing && Mathf.Abs(transform.position.x) < (screenBounds.x - spriteRenderer.sprite.bounds.extents.x))
+        else if (bouncing && Mathf.Abs(transform.position.x) < (screenBounds.Value.x - spriteRenderer.sprite.bounds.extents.x))
         {
             bouncing = false;
         }

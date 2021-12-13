@@ -1,7 +1,7 @@
 using UnityEngine;
 
-
-public class OutOfBoundsEventArgs // Class to hold variables which we want to pass with the event
+// Class to hold variables which we want to pass with the event
+public class OutOfBoundsEventArgs 
 {
     public string objectTag;
     public ScreenSides.Side screenSide;
@@ -28,11 +28,13 @@ public class OutOfBounds : MonoBehaviour
     [SerializeField] private bool top = true, bottom = true, left = true, right = true;
 
     [Tooltip("How far off the screen the object must go (as a percentage of screen size) before out of bounds is triggered")]
-    [SerializeField] [Range(0, 10)] private float offsetPercentage = 1f;
+    [SerializeField] [Range(0, 10)] private float offsetPercentage = 1.0f;
     private float offset;
 
     // Enum indicating which side of the screen the object went off
     private ScreenSides.Side directionObjectWentOutOfBounds;
+
+    [SerializeField] bool DebugModeOn;
 
     private void OnEnable()
     {
@@ -48,6 +50,10 @@ public class OutOfBounds : MonoBehaviour
         {
             EventBroker.CallObjectLost(new OutOfBoundsEventArgs(gameObject.tag, directionObjectWentOutOfBounds));
             gameObject.SetActive(false);
+            if (DebugModeOn)
+            {
+                Debug.Log("Object out of bounds: " + gameObject + ". Screen side: " + directionObjectWentOutOfBounds);
+            }
         }
     }
 
@@ -78,6 +84,6 @@ public class OutOfBounds : MonoBehaviour
 
     bool ObjectWentOffTop => top && transform.position.y > (screenBounds.Value.y * offset + halfObjectHeight);
     bool ObjectWentOffBottom => bottom && transform.position.y < (-screenBounds.Value.y * offset - halfObjectHeight);
-    bool ObjectWentOffLeft => left && transform.position.x > (-screenBounds.Value.x * offset - halfObjectWidth);
+    bool ObjectWentOffLeft => left && transform.position.x < (-screenBounds.Value.x * offset - halfObjectWidth);
     bool ObjectWentOffRight => right && transform.position.x > (screenBounds.Value.x * offset + halfObjectWidth);
 }

@@ -18,7 +18,7 @@ public class ObjectSpawner : MonoBehaviour
     [SerializeField] private float vertSpeed_min_increase = 0.05f, vertSpeed_max_increase = 0.1f;
     [SerializeField] private float vertSpeed_min, vertSpeed_max;
     // Spawn interval variables
-    [SerializeField] private float initialSpawnInterval = 1.0f, absolute_Min_SpawnInterval = 0.1f, current_spawnInterval;
+    [SerializeField] private float initialSpawnInterval = 1.0f, absolute_Min_SpawnInterval = 0.1f, spawnIntervalIncrement = 0.025f, current_spawnInterval;
     [SerializeField] private int spawnFrequencyIncreaseInterval = 10;
     // Wave time variables
     [SerializeField] private float waveTime = 30.0f, waveTime_increasePerLevel = 10.0f, timeBetweenWaves = 5.0f;
@@ -42,7 +42,7 @@ public class ObjectSpawner : MonoBehaviour
         spawning = true;
         spawnTimerCoroutine = StartCoroutine(SpawnTimer());
         // Event listeners
-        EventBroker.BubblePopped += OnBubblePopped;
+        // EventBroker.BubblePopped += OnBubblePopped;
         EventBroker.ObjectLost += OnObjectLost;
         EventBroker.MissedEverything += OnMissedEverything;
         EventBroker.GameOverTriggered += OnGameOverTriggered;
@@ -104,8 +104,8 @@ public class ObjectSpawner : MonoBehaviour
         // Do nothing if we're not spawning
         while (!spawning) yield return null;
 
-        // Wait a random period of time between 0 and the current spawnInterval value
-        yield return new WaitForSeconds(Random.Range(0, current_spawnInterval));
+        // Wait a random period of time between 0.2 and the current spawnInterval value
+        yield return new WaitForSeconds(Random.Range(0.2f, current_spawnInterval));
         // loop through each type of spawnable object (i.e bubble, cloud, bird etc)
         foreach (ObjectPoolItem spawnableObject in ObjectPooler.SharedInstance.itemsToPool)
         {
@@ -153,6 +153,7 @@ public class ObjectSpawner : MonoBehaviour
         UpdateWaveText();
         // Reset the spawn interval
         current_spawnInterval = initialSpawnInterval;
+        ResetSpeed();
 
         // Pause spawning for a certain amount of time and until the screen is mostly clear
         spawning = false;
@@ -201,18 +202,13 @@ public class ObjectSpawner : MonoBehaviour
         // TODO: figure out how to decouple this
         if (objectName == "Bubble")
         { 
-            spawnedObject.GetComponent<Bubble>().Size = Random.Range(0, 4);
             spawnedObject.GetComponent<BubbleMovement>().SetVertSpeed(Random.Range(vertSpeed_min, vertSpeed_max));
-        }
-        else if (objectName == "Cloud")
-        {
-            spawnedObject.GetComponent<Cloud>().Size = Random.Range(0, 3);
         }
 
         spawnedObject.SetActive(true);
         return spawnedObject;  
     }
-   
+
     public void OnBubblePopped()
     {
         // TODO: only do this on certain difficulty levels
@@ -242,7 +238,7 @@ public class ObjectSpawner : MonoBehaviour
     {
         if (!gameOver)
         {
-            current_spawnInterval = Mathf.Max(current_spawnInterval -= 0.05f, absolute_Min_SpawnInterval);
+            current_spawnInterval = Mathf.Max(current_spawnInterval -= spawnIntervalIncrement, absolute_Min_SpawnInterval);
         }
     }
 

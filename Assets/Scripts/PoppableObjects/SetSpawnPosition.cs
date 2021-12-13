@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Needs renaming
 public class SetSpawnPosition : MonoBehaviour
 {
     public enum SpawnPosition
@@ -14,41 +15,31 @@ public class SetSpawnPosition : MonoBehaviour
     }
 
     [SerializeField] SpawnPosition spawnPosition;
-    Vector3 screenBounds;
+    public Vector2Variable screenBounds;
 
     float halfObjectHeight;
     float halfObjectWidth;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        // Get reference to ScreenBounds
-        screenBounds = GameManager.Instance.ScreenBounds;
-        halfObjectHeight = GetComponent<Collider2D>().bounds.size.y / 2;
-        halfObjectWidth = GetComponent<Collider2D>().bounds.size.x / 2;
-    }
-
     private void OnEnable()
     {
-        // Get reference to ScreenBounds
-        screenBounds = GameManager.Instance.ScreenBounds;
-        halfObjectHeight = GetComponent<Collider2D>().bounds.size.y / 2;
-        halfObjectWidth = GetComponent<Collider2D>().bounds.size.x / 2;
-        transform.position = GetStartPos();
+        transform.position = DetermineStartPosition();
     }
 
     
-    Vector2 GetStartPos()
+    public Vector2 DetermineStartPosition()
     {
+        halfObjectHeight = GetComponent<Collider2D>().bounds.size.y / 2;
+        halfObjectWidth = GetComponent<Collider2D>().bounds.size.x / 2;
+
         if (spawnPosition == SpawnPosition.TOP)
         {
-            return new Vector3(RandomX(), halfObjectHeight + screenBounds.y, 0);
+            return new Vector3(RandomX(), halfObjectHeight + screenBounds.Value.y, 0);
         }
-        else if (spawnPosition == SpawnPosition.BOTTOM)
+        if (spawnPosition == SpawnPosition.BOTTOM)
         {
-            return new Vector3(RandomX(), -halfObjectHeight - screenBounds.y, 0);
+            return new Vector3(RandomX(), -halfObjectHeight - screenBounds.Value.y, 0);
         }
-        else if (spawnPosition == SpawnPosition.SIDES)
+        if (spawnPosition == SpawnPosition.SIDES)
         {
             if (Random.Range(0, 2) == 1)
             {
@@ -61,23 +52,27 @@ public class SetSpawnPosition : MonoBehaviour
         }
         if (spawnPosition == SpawnPosition.LEFT)
         {
-            return new Vector3(-(halfObjectWidth + screenBounds.x), RandomY(), 0);
-            spawnPosition = SpawnPosition.SIDES;
+            return new Vector3(-(halfObjectWidth + screenBounds.Value.x), RandomY(), 0);
         }
         else
-        {
-            return new Vector3((halfObjectWidth + screenBounds.x), RandomY(), 0);
-            spawnPosition = SpawnPosition.SIDES;
+        { 
+            return new Vector3((halfObjectWidth + screenBounds.Value.x), RandomY(), 0);
         }
+    }
+
+    private void OnDisable()
+    {
+        if (spawnPosition == SpawnPosition.LEFT || spawnPosition == SpawnPosition.RIGHT)
+            spawnPosition = SpawnPosition.SIDES;
     }
 
     float RandomX()
     {
-        return Random.Range(-screenBounds.x + halfObjectWidth, screenBounds.x - halfObjectWidth);
+        return Random.Range(-screenBounds.Value.x + halfObjectWidth, screenBounds.Value.x - halfObjectWidth);
     }
 
     float RandomY()
     {
-        return Random.Range(-screenBounds.y + halfObjectHeight, screenBounds.y - halfObjectHeight);
+        return Random.Range(-screenBounds.Value.y + halfObjectHeight, screenBounds.Value.y - halfObjectHeight);
     }
 }

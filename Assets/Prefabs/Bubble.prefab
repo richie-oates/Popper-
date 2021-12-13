@@ -104,6 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8c0843ec7f40eb4aa102dc094a0fd3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  screenBounds: {fileID: 11400000, guid: 6dc0d055050a5cd429059d661ad93748, type: 2}
   vertSpeed: 0
   horizontalSpeed: 0
   newHorizontalSpeed: 0
@@ -163,7 +164,7 @@ MonoBehaviour:
   left: 0
   right: 0
   offsetPercentage: 6.4
-  offset: 0
+  DebugModeOn: 0
 --- !u!114 &4517501088645977778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,6 +199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPosition: 0
+  screenBounds: {fileID: 11400000, guid: 6dc0d055050a5cd429059d661ad93748, type: 2}
 --- !u!82 &5704833700004264396
 AudioSource:
   m_ObjectHideFlags: 0

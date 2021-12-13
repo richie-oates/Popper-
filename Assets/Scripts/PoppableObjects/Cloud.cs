@@ -6,12 +6,9 @@ public class Cloud : ObjectOnClick
 {
     private int size;
     [SerializeField] float timeDelayBeforeDestroy;
-    [SerializeField] float[] scales
-        
-        
-        ; // Array of scales for different sized clouds
-    [SerializeField] private GameObject particlePrefab; // particle effect prefab
-    ObjectSpawner objectSpawner; // Needed to spawn smaller clouds
+    [SerializeField] float[] scales;                        // Array of scales for different sized clouds
+    [SerializeField] private GameObject particlePrefab;     // particle effect prefab
+    ObjectSpawner objectSpawner;                            // Needed to spawn smaller clouds
 
     // Property 'size' is an integer value signifying the different positions in the scales array
     // Setting the size uses the relevant scale values and applies them to the transform
@@ -33,6 +30,17 @@ public class Cloud : ObjectOnClick
         objectSpawner = FindObjectOfType<ObjectSpawner>();
         //Needs to use a seperate audiosource because on click destroys itself before it would have chance to play a sound
         audioSource = GameObject.Find("SFX Audio Source").GetComponent<AudioSource>();
+    }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        Size = Random.Range(0, scales.Length);
+    }
+
+    private void OnDisable()
+    {
+        Size = scales.Length - 1;
     }
 
     protected override void OnClickOnObject()
