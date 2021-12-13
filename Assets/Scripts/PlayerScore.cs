@@ -83,6 +83,24 @@ public class PlayerScore : Singleton<PlayerScore>
             //Save high score to player prefs
             PlayerPrefs.SetInt("highscore", highScore);
             PlayerPrefs.SetInt("highCombo", highCombo);
+
+            SaveHighScoreToGooglePlayLeaderboard();
+        }
+    }
+
+    private void SaveHighScoreToGooglePlayLeaderboard()
+    {
+        if (GameManager.Instance.IsConnectedToGooglePlayServices)
+        {
+            Debug.Log("Reporting score...");
+            Social.ReportScore(highScore, GPGSIds.leaderboard_high_score, (success) =>
+            {
+                if (!success) Debug.LogError("Unable to post highscore");
+            });
+        }
+        else
+        {
+            Debug.Log("Not signed in .. unable to report score");
         }
     }
 

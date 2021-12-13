@@ -1,3 +1,6 @@
+using GooglePlayGames;
+using GooglePlayGames.BasicApi;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,7 +21,16 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] GameObject loadingScreen, loadingText;
     [SerializeField] ProgressBar loadingProgressBar;
     [SerializeField] CanvasGroup LoadingScreenAlphaCanvas;
+
+    bool isConnectedToGooglePlayServices;
     
+    public bool IsConnectedToGooglePlayServices
+    {
+        get
+        {
+            return isConnectedToGooglePlayServices;
+        }
+    }
     public enum GameState
     {
         PREGAME,
@@ -77,6 +89,10 @@ public class GameManager : Singleton<GameManager>
 
         // Activate loading screen
         loadingScreen.gameObject.SetActive(true);
+
+        // Google Play Services
+        PlayGamesPlatform.DebugLogEnabled = true;
+        PlayGamesPlatform.Activate();
     }
 
     public Vector2 GetScreenBounds()
@@ -90,6 +106,23 @@ public class GameManager : Singleton<GameManager>
     private void Start()
     {
         LoadGame();
+        SignInToGooglePlayServices();
+    }
+
+    private void SignInToGooglePlayServices()
+    {
+        PlayGamesPlatform.Instance.Authenticate(SignInInteractivity.CanPromptOnce, (result) =>
+        {
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    isConnectedToGooglePlayServices = true;
+                    break;
+                default:
+                    isConnectedToGooglePlayServices = false;
+                    break;
+            }
+        });
     }
 
     public void LoadGame()
