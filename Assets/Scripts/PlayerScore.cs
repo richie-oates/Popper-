@@ -196,7 +196,8 @@ public class PlayerScore : Singleton<PlayerScore>
 
     public void OnObjectLost(OutOfBoundsEventArgs args)
     {
-        if (args.objectTag == "Bubble" && arcadeMode && !gameOver)
+        if (_currentState == GameManager.GameState.PREGAME || gameOver) return;
+        if (args.objectTag == "Bubble" && arcadeMode)
         {
             bubblesLost++;
             bubbleLostText.text = "Bubbles Lost: " + bubblesLost; // DebugHUD
@@ -207,8 +208,9 @@ public class PlayerScore : Singleton<PlayerScore>
 
     public void OnMissedEverything()
     {
+        if (_currentState == GameManager.GameState.PREGAME || gameOver) return;
         ResetCombo();
-        if (arcadeMode && !gameOver)
+        if (arcadeMode)
         {
             currentMisses++;
             DangerLevelChange();
@@ -218,8 +220,8 @@ public class PlayerScore : Singleton<PlayerScore>
 
     public void DangerLevelChange()
     {
-        if (gameOver) return;
-        // Updates the danget levele slider
+        if (gameOver || _currentState == GameManager.GameState.PREGAME) return;
+        // Updates the danger level slider
         dangerLevelSlider.maxValue = maxBubblesLost;
         dangerLevel = bubblesLost + currentMisses;
         dangerLevelSlider.value = dangerLevel;

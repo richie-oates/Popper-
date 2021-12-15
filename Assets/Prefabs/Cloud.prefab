@@ -232,7 +232,6 @@ MonoBehaviour:
   - 0.2
   - 0.35
   - 0.6
-  - 1
   particlePrefab: {fileID: 8554864910755249162, guid: 99c4d2a7dff2b9f4e8b13a0b5fab5a32, type: 3}
 --- !u!114 &7021765358160650599
 MonoBehaviour:

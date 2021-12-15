@@ -67,7 +67,7 @@ public class UIManager : Singleton<UIManager>
             PauseMenu.SetActive(true);
             GameOverMenu.SetActive(false);
         }
-        if (currentState == GameManager.GameState.ENDGAME)
+        if (currentState == GameManager.GameState.ENDGAME && previousState == GameManager.GameState.RUNNING)
         {
             HUD.SetActive(false);
             BackgroundBlur.SetActive(true);

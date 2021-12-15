@@ -16,4 +16,9 @@ public class RecordsMenu : MonoBehaviour
         highCombo = PlayerPrefs.GetInt("highCombo", highCombo);
         highComboText.text = String.Format("{0:#,###0}", highCombo);
     }
+
+    public void DisplayGooglePlayLeaderboard()
+    {
+        Social.ShowLeaderboardUI();
+    }
 }
