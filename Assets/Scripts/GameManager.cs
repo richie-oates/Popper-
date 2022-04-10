@@ -109,7 +109,7 @@ public class GameManager : Singleton<GameManager>
         SignInToGooglePlayServices();
     }
 
-    private void SignInToGooglePlayServices()
+    public void SignInToGooglePlayServices()
     {
         PlayGamesPlatform.Instance.Authenticate(SignInInteractivity.CanPromptOnce, (result) =>
         {

@@ -28,8 +28,7 @@ public class MusicController : MonoBehaviour
         menuTrackText.text = "" + (menuMusicTrackNumber + 1);
         gameMusicTrackNumber = PlayerPrefs.GetInt("gameTrack", gameMusicTrackNumber);
         gameTrackText.text = "" + (gameMusicTrackNumber + 1);
-        // Play menu music
-        // PlayMenuMusic();
+
         backButton.onClick.AddListener(OnExitMenu);
     }
 
@@ -71,7 +70,6 @@ public class MusicController : MonoBehaviour
                 break;
 
             case GameManager.GameState.ENDGAME:
-                // PlayMenuMusic();
                 break;
 
             default:

@@ -7,7 +7,7 @@ public class ClockMovement : MonoBehaviour
 	[Tooltip("Horizontal speed, in units/sec")]
 	public float minSpeed, maxSpeed;
 
-	[Tooltip("The range the height of the arc can be based on screen height")]
+	[Tooltip("The range the height of the arc can be as ratio of screen height")]
 	public float minArcHeight, maxArcHeight;
 
 	float arcHeight, speed;
@@ -52,39 +52,47 @@ public class ClockMovement : MonoBehaviour
 
 	void Update()
 	{
-		if (!movementFrozen)
-        {
-			if (!broken)
-            {
-				// Compute the next position, with arc added in
-				float x0 = startPos.x;
-				float x1 = targetPos.x;
-				float dist = x1 - x0;
-				float nextX = Mathf.MoveTowards(transform.position.x, x1, speed * Time.deltaTime);
-				float baseY = Mathf.Lerp(startPos.y, targetPos.y, (nextX - x0) / dist);
-				float arc = arcHeight * (nextX - x0) * (nextX - x1) / (-0.25f * dist * dist);
-				Vector3 nextPos = new Vector3(nextX, baseY + arc, transform.position.z);
-
-				// Move to next position
-				transform.position = nextPos;
-
-				// Rotate to face facingPos
-				headingDirection = (facingPos - transform.position).normalized;
-				Quaternion headingChange = Quaternion.FromToRotation(spriteTransform.up, headingDirection);
-				spriteTransform.localRotation *= headingChange;
-
-				// Do something when we reach the target
-				if (nextPos == targetPos) Arrived();
-			}
-            else
-            {
-				transform.Translate(Vector3.down * fallSpeed * Time.deltaTime);
-				if (transform.position.y < -screenBounds.y - 5.0f)
-				{ 
-					gameObject.SetActive(false); 
-				}
-            }
+		if (movementFrozen) return;
+		if (!broken)
+		{
+			ParabolaMovement();
+		}
+		else
+		{
+			FallingMovement();
 			
+		}
+	}
+
+	void ParabolaMovement()
+    {
+		// Compute the next position, with arc added in
+		float x0 = startPos.x;
+		float x1 = targetPos.x;
+		float dist = x1 - x0;
+		float nextX = Mathf.MoveTowards(transform.position.x, x1, speed * Time.deltaTime);
+		float baseY = Mathf.Lerp(startPos.y, targetPos.y, (nextX - x0) / dist);
+		float arc = arcHeight * (nextX - x0) * (nextX - x1) / (-0.25f * dist * dist);
+		Vector3 nextPos = new Vector3(nextX, baseY + arc, transform.position.z);
+
+		// Move to next position
+		transform.position = nextPos;
+
+		// Rotate to face facingPos
+		headingDirection = (facingPos - transform.position).normalized;
+		Quaternion headingChange = Quaternion.FromToRotation(spriteTransform.up, headingDirection);
+		spriteTransform.localRotation *= headingChange;
+
+		// Do something when we reach the target
+		if (nextPos == targetPos) Arrived();
+	}
+
+	void FallingMovement()
+    {
+		transform.Translate(Vector3.down * fallSpeed * Time.deltaTime);
+		if (transform.position.y < -screenBounds.y - 5.0f)
+		{
+			gameObject.SetActive(false);
 		}
 	}
 
@@ -134,6 +142,4 @@ public class ClockMovement : MonoBehaviour
 		clockSpriteRenderer.sprite = clockHitSprite;
 		broken = true;
     }
-
-
 }

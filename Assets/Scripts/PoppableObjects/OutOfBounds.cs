@@ -16,7 +16,6 @@ public class OutOfBoundsEventArgs
 // Checks to see if an object leaves the bounds of the screen
 // Disables objects which go out of bounds
 // Broadcasts an event, passing the object tag and which side of the boundary it left from
-[RequireComponent(typeof( Vector2Variable))]
 public class OutOfBounds : MonoBehaviour
 {
     [Tooltip("Drop screenBounds scriptable object here")]
@@ -36,16 +35,30 @@ public class OutOfBounds : MonoBehaviour
 
     [SerializeField] bool DebugModeOn;
 
+    bool trackingObjectOnScreen = false;
+
     private void OnEnable()
     {
         // Get object sizes
         halfObjectHeight = GetComponent<Collider2D>().bounds.size.y / 2;
         halfObjectWidth = GetComponent<Collider2D>().bounds.size.x / 2;
         offset = 1.0f + offsetPercentage / 100f;
+
+        if (!ObjectWentOutOfBounds())
+        {
+            trackingObjectOnScreen = true;
+        }
     }
 
     private void Update()
     {
+        if (!trackingObjectOnScreen)
+        {
+            if (!ObjectWentOutOfBounds())
+                trackingObjectOnScreen = true;
+            else
+                return;
+        }
         if (ObjectWentOutOfBounds())
         {
             EventBroker.CallObjectLost(new OutOfBoundsEventArgs(gameObject.tag, directionObjectWentOutOfBounds));

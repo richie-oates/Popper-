@@ -14,7 +14,7 @@ public class EventBroker
 
     public static void CallObjectLost(OutOfBoundsEventArgs args)
     {
-        ObjectLost.Invoke(args);
+        ObjectLost?.Invoke(args);
     }
 
     public static event Action<GameObject> HitObject;
@@ -64,5 +64,12 @@ public class EventBroker
     public static void CallScreenSizeChanged(Vector3 newScreenBounds)
     {
         ScreenSizeChanged?.Invoke(newScreenBounds);
+    }
+
+    public static event Action<bool> FreezeMovement;
+
+    public static void CallFreezeMovement(bool freeze)
+    {
+        FreezeMovement?.Invoke(freeze);
     }
 }

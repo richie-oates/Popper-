@@ -4,15 +4,16 @@ using UnityEngine;
 
 // Stores the screen bounds as a Vector2 in a scriptable object so it's accessible to other scripts
 // Checks for screen size changes and updates screen bounds if necessary
-public class ScreenBoundsUpdater : MonoBehaviour
+public class ScreenBoundsUpdater : Singleton<ScreenBoundsUpdater>
 {
     private int screenWidth, screenHeight;
     
     public Vector2Variable screenBounds;
     
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         screenBounds.Value = GetScreenBounds();
     }
 

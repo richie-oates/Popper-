@@ -25,7 +25,6 @@ public class ObjectPooler : MonoBehaviour
         SharedInstance = this;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         // Loop through list of objects to pool, instantiating them, deactivating them and adding them to the list 

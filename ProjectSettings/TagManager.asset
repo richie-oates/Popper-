@@ -10,6 +10,7 @@ TagManager:
   - Clock
   - Bird
   - safe
+  - Collectable
   layers:
   - Default
   - TransparentFX
@@ -52,4 +53,7 @@ TagManager:
     locked: 0
   - name: Foreground
     uniqueID: 2594406009
+    locked: 0
+  - name: VeryFront
+    uniqueID: 186886169
     locked: 0

@@ -5,11 +5,12 @@ using UnityEngine;
 public class ClockOnClick : ObjectOnClick
 {
     [SerializeField] int timeToFreeze = 5;
-    ClockMovement clockMovement;
     [SerializeField] AudioClip[] breakSounds;
     [SerializeField] AudioClip[] boingSounds;
     [SerializeField] AudioClip ticking;
     Coroutine freezeTimeCoroutine;
+
+    ClockMovement clockMovement;
 
     protected override void Start()
     {
@@ -24,8 +25,18 @@ public class ClockOnClick : ObjectOnClick
             audioSource.PlayOneShot(breakSounds[Random.Range(0, breakSounds.Length)]);
         if (boingSounds.Length > 0)
             audioSource.PlayOneShot(boingSounds[Random.Range(0, boingSounds.Length)]);
-        if (_currentState == GameManager.GameState.RUNNING && !PlayerScore.Instance.gameOver)
+        if ((_currentState == GameManager.GameState.RUNNING || _currentState == GameManager.GameState.FROZEN) && !PlayerScore.Instance.gameOver)
         {
+            ClockOnClick[] clocks = FindObjectsOfType<ClockOnClick>();
+            foreach (ClockOnClick clock in clocks)
+            {
+                if (clock.freezeTimeCoroutine != null)
+                {
+                    clock.StopCoroutine(clock.freezeTimeCoroutine);
+                    clock.audioSource.Stop();
+                }
+                
+            }
             freezeTimeCoroutine = StartCoroutine(FreezeTimeForSeconds(timeToFreeze));
         }
         clockMovement.BreakClock();
