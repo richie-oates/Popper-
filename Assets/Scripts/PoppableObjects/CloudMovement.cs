@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CloudMovement : MonoBehaviour
 {
-    protected Vector3 screenBounds;
+    protected Vector2 screenBounds;
     protected Coroutine coroutine;
     [SerializeField] float minHorizontalSpeed, maxHorizontalSpeed, horizontalSpeed, newHorizontalSpeed;
     [SerializeField] float minVerticalSpeed, maxVerticalSpeed, verticalSpeed, newVerticalSpeed;

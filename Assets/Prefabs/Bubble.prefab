@@ -123,7 +123,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 663a2cb0b5d9fb94699f729672d8cc8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentState: 0
   audioSource: {fileID: 0}
   onClickSounds:
   - {fileID: 8300000, guid: 3576a358b00d4194b9d255b3f3ab8b12, type: 3}
@@ -143,9 +142,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0022553205, y: 0.0010091662}
+  m_Offset: {x: 0.0073587894, y: 0.0010091662}
   serializedVersion: 2
-  m_Radius: 0.55122524
+  m_Radius: 0.589682
 --- !u!114 &1802856163074243113
 MonoBehaviour:
   m_ObjectHideFlags: 0

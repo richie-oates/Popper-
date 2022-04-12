@@ -1705,13 +1705,13 @@ MonoBehaviour:
   - objectToPool: {fileID: 4997344439126310330, guid: 05a2187bf7c8bf4458f6d62313f6e108, type: 3}
     amountToPool: 1
     shouldExpand: 0
-    rarity: 60
+    rarity: 120
     spawnChance: 0
     waveIntroduced: 7
   - objectToPool: {fileID: 8403101809149557388, guid: 25de487d62718924091966ed03190e1f, type: 3}
     amountToPool: 2
     shouldExpand: 0
-    rarity: 45
+    rarity: 80
     spawnChance: 0
     waveIntroduced: 9
   - objectToPool: {fileID: 2158774362619169916, guid: 75ebfc803dae83543a6020ce84f428eb, type: 3}
@@ -1723,7 +1723,7 @@ MonoBehaviour:
   - objectToPool: {fileID: 1097416576936203182, guid: 0e90671b307e66043ba2f2728a2b842e, type: 3}
     amountToPool: 20
     shouldExpand: 0
-    rarity: 15
+    rarity: 25
     spawnChance: 0
     waveIntroduced: 3
 --- !u!4 &101470596
@@ -21139,16 +21139,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4373a147f5e981a46b275594ec23b81f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vertSpeed_max_initial: 2
+  vertSpeed_max_initial: 2.5
   vertSpeed_min_initial: 0.5
-  vertSpeed_max_limit: 6
+  vertSpeed_max_limit: 8
   vertSpeed_min_limit: 4
-  vertSpeed_min_increase: 0.05
+  vertSpeed_min_increase: 0.1
   vertSpeed_max_increase: 0.1
   vertSpeed_min: 0
   vertSpeed_max: 0
   initialSpawnInterval: 1
-  absolute_Min_SpawnInterval: 0.2
+  absolute_Min_SpawnInterval: 0.1
   spawnIntervalIncrement: 0.05
   current_spawnInterval: 0
   spawnFrequencyIncreaseInterval: 10

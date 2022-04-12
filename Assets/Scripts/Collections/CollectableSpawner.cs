@@ -46,10 +46,9 @@ public class CollectableSpawner : MonoBehaviour
 
         if (currentCollection.RemainingCollectables().Count == 0)
         {
-            isSpawning = false;
             PlayerPrefs.SetInt(currentCollection.name, 1);
             currentCollection.SetAsComplete();
-            currentCollection =  collections.CurrentCollection;
+            currentCollection = collections.CurrentCollection;
         }
     }
 

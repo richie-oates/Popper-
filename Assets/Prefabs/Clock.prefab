@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 4997344439126310330}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.31, y: 1.52, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 1}
   m_Children:
   - {fileID: 1335681007516527340}
   m_Father: {fileID: 0}
@@ -100,9 +100,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.047507048, y: -0.06640375}
+  m_Offset: {x: -0.030202787, y: -0.031795185}
   serializedVersion: 2
-  m_Radius: 0.592299
+  m_Radius: 0.65805537
 --- !u!114 &3195230163062997370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,7 +135,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5bbb32f8dddcb44dbd254307c6886d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentState: 0
   audioSource: {fileID: 0}
   onClickSounds: []
   objectHit: 0

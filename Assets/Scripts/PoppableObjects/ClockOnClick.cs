@@ -25,8 +25,10 @@ public class ClockOnClick : ObjectOnClick
             audioSource.PlayOneShot(breakSounds[Random.Range(0, breakSounds.Length)]);
         if (boingSounds.Length > 0)
             audioSource.PlayOneShot(boingSounds[Random.Range(0, boingSounds.Length)]);
-        if ((_currentState == GameManager.GameState.RUNNING || _currentState == GameManager.GameState.FROZEN) && !PlayerScore.Instance.gameOver)
+        if ((GameManager.Instance.CurrentGameState == GameManager.GameState.RUNNING
+            || GameManager.Instance.CurrentGameState == GameManager.GameState.FROZEN) && !PlayerScore.Instance.gameOver)
         {
+            print("ClockOnClick: checking for other freezetimecoroutines");
             ClockOnClick[] clocks = FindObjectsOfType<ClockOnClick>();
             foreach (ClockOnClick clock in clocks)
             {

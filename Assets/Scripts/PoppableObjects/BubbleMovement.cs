@@ -39,7 +39,7 @@ public class BubbleMovement : MonoBehaviour
         vertSpeed = -speed;
     }
 
-    protected void FixedUpdate()
+    protected void Update()
     {
         if (movementFrozen) return;
 

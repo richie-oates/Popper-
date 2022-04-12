@@ -43,7 +43,7 @@ public class Collectable : ObjectOnClick
             name = collectable_so.name;
             spriteRenderer.sprite = collectable_so.SpriteThis;
             Vector2 size = spriteRenderer.sprite.bounds.extents;
-            thisCollider.radius = Mathf.Max(size.x, size.y);
+            thisCollider.radius = Mathf.Max(size.x, size.y) * 1.2f;
         }
     }
 
@@ -81,7 +81,7 @@ public class Collectable : ObjectOnClick
         }
         transform.position = Vector3.zero;
         yield return new WaitForSeconds(0.5f);
-        UIManager.Instance.ShowText("You found the " + gameObject.name, 10, new Color(0.1137f, 0.1215f, 0.898f), transform.position + new Vector3(0, 2, 0), Vector3.up * 5, 2f);
+        UIManager.Instance.ShowText("You found the " + gameObject.name, 10, new Color(0.1137f, 0.1215f, 0.898f), transform.position + new Vector3(0, 1.25f, 0), Vector3.up * 5, 2f);
         
         bool buttonPressed = false;
         while (!buttonPressed)
