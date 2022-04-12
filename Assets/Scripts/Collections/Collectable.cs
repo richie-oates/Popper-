@@ -4,27 +4,64 @@ using UnityEngine;
 
 public class Collectable : ObjectOnClick
 {
-    [SerializeField] int rarity;
+    [SerializeField] Collectable_so collectable_so;
     [SerializeField] float animationMoveSpeed = 1.5f;
 
     Animator animator;
     SpriteRenderer spriteRenderer;
-    bool hasBeenCollected;
+    CircleCollider2D thisCollider;
 
     void Awake()
     {
         animator = GetComponent<Animator>();
+        thisCollider = GetComponent<CircleCollider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        InitialiseCollectable();
         if (PlayerPrefs.GetInt(name) == 1)
         {
             SetAsCollected();
         }
     }
 
+    protected override void Start()
+    {
+        base.Start();
+    }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        InitialiseCollectable();
+    }
+
+    void InitialiseCollectable()
+    {
+        if(collectable_so != null)
+        {
+            name = collectable_so.name;
+            spriteRenderer.sprite = collectable_so.SpriteThis;
+            Vector2 size = spriteRenderer.sprite.bounds.extents;
+            thisCollider.radius = Mathf.Max(size.x, size.y);
+        }
+    }
+
     protected override void OnClickOnObject()
     {
+        if (HasBeenCollected)
+        {
+            print("Hit " + gameObject + " but has been collected");
+                return;
+        }
+        if (GameManager.Instance.CurrentGameState != GameManager.GameState.RUNNING)
+        {
+            print("Not running");
+            return;
+        }
+
+        if (PlayerScore.Instance.gameOver == true) return;
         base.OnClickOnObject();
-        if (hasBeenCollected) return;
         StartCoroutine(CollectActions());
     }
 
@@ -43,7 +80,7 @@ public class Collectable : ObjectOnClick
             yield return new WaitForEndOfFrame();
         }
         transform.position = Vector3.zero;
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(0.5f);
         UIManager.Instance.ShowText("You found the " + gameObject.name, 10, new Color(0.1137f, 0.1215f, 0.898f), transform.position + new Vector3(0, 2, 0), Vector3.up * 5, 2f);
         
         bool buttonPressed = false;
@@ -54,24 +91,36 @@ public class Collectable : ObjectOnClick
         }
 
         GameManager.Instance.UpdateState(GameManager.GameState.RUNNING);
-        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 
     public void SetAsCollected()
     {
-        hasBeenCollected = true;
+        HasBeenCollected = true;
         print("Collected: " + gameObject);
     }
 
+    public void SetCollectable_so(Collectable_so so)
+    {
+        collectable_so = so;
+        InitialiseCollectable();
+    }
+
     #region Properties
+
+    public Collectable_so GetCollectable_So
+    {
+        get { return collectable_so; }
+    }
     public int Rarity
     {
-        get { return rarity; }
+        get { return collectable_so.Rarity; }
     }
 
     public bool HasBeenCollected
     {
-        get { return hasBeenCollected; }
+        get { return collectable_so.HasBeenCollected; }
+        set { collectable_so.HasBeenCollected = value; }
     }
     #endregion
 }

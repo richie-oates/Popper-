@@ -111,6 +111,7 @@ public class ParabolaMovement : MonoBehaviour
 
 	void Arrived()
 	{
-		gameObject.SetActive(false);
+		gameObject.GetComponent<Collectable>().GetCollectable_So.CanSpawn = true;
+		Destroy(gameObject);
 	}
 }

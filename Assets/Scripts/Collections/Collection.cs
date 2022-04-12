@@ -5,6 +5,7 @@ using UnityEngine;
 public class Collection : MonoBehaviour
 {
     [SerializeField] List<GameObject> collectables;
+    [SerializeField] string googlePlayAchievementName;
 
     public void InitialiseCollection()
     {

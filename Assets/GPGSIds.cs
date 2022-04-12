@@ -24,7 +24,10 @@
 
 public static class GPGSIds
 {
+        public const string achievement_eat_your_greens = "CgkIxsGD340MEAIQBA"; // <GPGSID>
+        public const string achievement_an_apple_a_day = "CgkIxsGD340MEAIQAw"; // <GPGSID>
         public const string leaderboard_high_score = "CgkIxsGD340MEAIQAQ"; // <GPGSID>
+        public const string achievement_youre_so_special = "CgkIxsGD340MEAIQBQ"; // <GPGSID>
 
 }
 
