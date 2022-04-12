@@ -34,8 +34,7 @@ public class ClockOnClick : ObjectOnClick
                 {
                     clock.StopCoroutine(clock.freezeTimeCoroutine);
                     clock.audioSource.Stop();
-                }
-                
+                } 
             }
             freezeTimeCoroutine = StartCoroutine(FreezeTimeForSeconds(timeToFreeze));
         }

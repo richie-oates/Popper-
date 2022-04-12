@@ -1698,32 +1698,32 @@ MonoBehaviour:
   itemsToPool:
   - objectToPool: {fileID: 492703499728453014, guid: f46eb31711f619348a346a7805bf1eba, type: 3}
     amountToPool: 40
-    shouldExpand: 0
+    shouldExpand: 1
     rarity: 1
     spawnChance: 0
     waveIntroduced: 1
   - objectToPool: {fileID: 4997344439126310330, guid: 05a2187bf7c8bf4458f6d62313f6e108, type: 3}
-    amountToPool: 2
+    amountToPool: 1
     shouldExpand: 0
-    rarity: 30
+    rarity: 60
     spawnChance: 0
     waveIntroduced: 7
   - objectToPool: {fileID: 8403101809149557388, guid: 25de487d62718924091966ed03190e1f, type: 3}
     amountToPool: 2
     shouldExpand: 0
-    rarity: 25
+    rarity: 45
     spawnChance: 0
     waveIntroduced: 9
   - objectToPool: {fileID: 2158774362619169916, guid: 75ebfc803dae83543a6020ce84f428eb, type: 3}
     amountToPool: 3
     shouldExpand: 0
-    rarity: 20
+    rarity: 35
     spawnChance: 0
     waveIntroduced: 5
   - objectToPool: {fileID: 1097416576936203182, guid: 0e90671b307e66043ba2f2728a2b842e, type: 3}
     amountToPool: 20
     shouldExpand: 0
-    rarity: 8
+    rarity: 15
     spawnChance: 0
     waveIntroduced: 3
 --- !u!4 &101470596

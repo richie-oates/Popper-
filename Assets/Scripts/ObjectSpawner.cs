@@ -42,7 +42,7 @@ public class ObjectSpawner : MonoBehaviour
         spawning = true;
         spawnTimerCoroutine = StartCoroutine(SpawnTimer());
         // Event listeners
-        // EventBroker.BubblePopped += OnBubblePopped;
+        EventBroker.BubblePopped += OnBubblePopped;
         EventBroker.ObjectLost += OnObjectLost;
         EventBroker.MissedEverything += OnMissedEverything;
         EventBroker.GameOverTriggered += OnGameOverTriggered;
@@ -104,8 +104,8 @@ public class ObjectSpawner : MonoBehaviour
         // Do nothing if we're not spawning
         while (!spawning) yield return null;
 
-        // Wait a random period of time between 0.2 and the current spawnInterval value
-        yield return new WaitForSeconds(Random.Range(0.2f, current_spawnInterval));
+        // Wait a random period of time between 0.05 and the current spawnInterval value
+        yield return new WaitForSeconds(Random.Range(0.05f, current_spawnInterval));
         // loop through each type of spawnable object (i.e bubble, cloud, bird etc)
         foreach (ObjectPoolItem spawnableObject in ObjectPooler.SharedInstance.itemsToPool)
         {
@@ -160,7 +160,7 @@ public class ObjectSpawner : MonoBehaviour
         betweenWaves = true;
         yield return new WaitForSeconds(timeBetweenWaves);
         // Check that most of the objects have been cleared from the screen
-        while (ActiveObjectsInScene() > 3) yield return null;
+        while (ActiveObjectsInScene() > 5) yield return null;
         // Restart spawning
         spawning = true;
         betweenWaves = false;
