@@ -62,6 +62,19 @@ public class Collection_so : ScriptableObject
         }
     }
 
+    public void ResetCollection()
+    {
+        isComplete = false;
+        PlayerPrefs.SetInt(name, 0);
+
+        foreach (Collectable_so collectable_so in collectable_sos)
+        {
+            PlayerPrefs.SetInt(collectable_so.name, 0);
+            collectable_so.HasBeenCollected = false;
+            collectable_so.CanSpawn = true;
+        }
+    }
+
     public List<Collectable_so> Collectable_sos
     {
         get { return collectable_sos; }

@@ -32,6 +32,19 @@ public class PlayerScore : Singleton<PlayerScore>
         get { return highScore; }
     }
 
+    protected override void Awake()
+    {
+        base.Awake();
+        EventBroker.ClearRecords += OnClearRecords;
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        EventBroker.ClearRecords -= OnClearRecords;
+
+    }
+
     private void Start()
     {
         // Add listener for GameState changes
@@ -86,6 +99,14 @@ public class PlayerScore : Singleton<PlayerScore>
 
             SaveHighScoreToGooglePlayLeaderboard();
         }
+    }
+
+    void OnClearRecords()
+    {
+        highCombo = 0;
+        highScore = 0;
+        PlayerPrefs.SetInt("highscore", highScore);
+        PlayerPrefs.SetInt("highCombo", highCombo);
     }
 
     private void SaveHighScoreToGooglePlayLeaderboard()

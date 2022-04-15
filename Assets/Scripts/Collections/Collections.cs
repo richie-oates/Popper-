@@ -14,6 +14,14 @@ public class Collections : MonoBehaviour
         completeCollections = new List<Collection_so>();
 
         InitialiseCollections();
+
+        EventBroker.ClearCollections += OnClearCollections;
+    }
+
+    void OnDestroy()
+    {
+        EventBroker.ClearCollections -= OnClearCollections;
+
     }
 
     void InitialiseCollections()
@@ -53,6 +61,21 @@ public class Collections : MonoBehaviour
                 return;
             }
         }
+    }
+
+    public void ResetCollections()
+    {
+        foreach (Collection_so collection_so in allCollections)
+        {
+            collection_so.ResetCollection();
+            completeCollections.Clear();
+            currentCollection = allCollections[0];
+        }
+    }
+
+    void OnClearCollections()
+    {
+        ResetCollections();
     }
 
     public List<Collection_so> CompleteCollections

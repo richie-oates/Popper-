@@ -72,4 +72,18 @@ public class EventBroker
     {
         FreezeMovement?.Invoke(freeze);
     }
+
+    public static event Action ClearCollections;
+
+    public static void CallClearCollections()
+    {
+        ClearCollections?.Invoke();
+    }
+
+    public static event Action ClearRecords;
+
+    public static void CallClearRecords()
+    {
+        ClearRecords?.Invoke();
+    }
 }
