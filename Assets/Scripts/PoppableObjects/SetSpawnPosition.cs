@@ -28,8 +28,9 @@ public class SetSpawnPosition : MonoBehaviour
     
     public Vector2 DetermineStartPosition()
     {
-        halfObjectHeight = GetComponent<Collider2D>().bounds.size.y / 2;
-        halfObjectWidth = GetComponent<Collider2D>().bounds.size.x / 2;
+        var size = GetComponent<Collider2D>().bounds.size;
+        halfObjectHeight = size.y / 2;
+        halfObjectWidth = size.x / 2;
 
         if (spawnPosition == SpawnPosition.TOP)
         {

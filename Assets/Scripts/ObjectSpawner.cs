@@ -79,6 +79,8 @@ public class ObjectSpawner : MonoBehaviour
         }
         else if (currentState == GameManager.GameState.RUNNING && previousState == GameManager.GameState.PREGAME)
         {
+            ResetSpeed();
+            current_spawnInterval = initialSpawnInterval;
             // Clears all spawned objects from the screen
             foreach (GameObject item in ObjectPooler.SharedInstance.pooledObjects)
             {
@@ -136,15 +138,15 @@ public class ObjectSpawner : MonoBehaviour
     IEnumerator WaveTimer(float time)
     {
         // Countdown timer updates text for DebugHUD every second
-        float _time = time;
-        waveTime_remaining = (int)_time;
+        float timer = time;
+        waveTime_remaining = (int)timer;
         UpdateWaveText();
-        while (_time > 0.0f)
+        while (timer > 0.0f)
         {
             while (!spawning) yield return null;
             yield return new WaitForSeconds(1);
-            _time--;
-            waveTime_remaining = (int)_time;
+            timer--;
+            waveTime_remaining = (int)timer;
             UpdateWaveText();
         }
         // Once timer hits zero:
@@ -176,14 +178,6 @@ public class ObjectSpawner : MonoBehaviour
         yield return new WaitForSeconds(spawnFrequencyIncreaseInterval);
         DecreaseSpawnInterval();
         spawnFrequencyCoroutine = StartCoroutine(SpawnFrequencyIncrease());
-    }
-
-    // TODO: Remove when sure I don't need it
-    IEnumerator PauseSpawning(float seconds)
-    {
-        spawning = false;
-        yield return new WaitForSeconds(seconds);
-        spawning = true;
     }
 
     // Spawns an object from the object pool
@@ -264,7 +258,7 @@ public class ObjectSpawner : MonoBehaviour
     public void OnGameOverTriggered()
     {
         gameOver = true;
-        LeanTween.value(current_spawnInterval, 0.01f, 0.5f).setOnUpdate((float val) =>
+        LeanTween.value(current_spawnInterval, 0.01f, 0.2f).setOnUpdate((float val) =>
         {
             current_spawnInterval = val;
         });

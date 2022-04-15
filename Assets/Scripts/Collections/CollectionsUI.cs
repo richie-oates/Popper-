@@ -14,7 +14,7 @@ public class CollectionsUI : MonoBehaviour
         DestroyAllChildren();
 
         var currentCollection = collections.CurrentCollection;
-        if ( !currentCollection.IsComplete)
+        if (currentCollection != null && !currentCollection.IsComplete)
         {
             GameObject go = Instantiate(collectionPanelPrefab);
             go.transform.SetParent(transform);

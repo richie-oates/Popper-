@@ -24,11 +24,6 @@ public class Collectable : ObjectOnClick
         }
     }
 
-    protected override void Start()
-    {
-        base.Start();
-    }
-
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -80,7 +75,6 @@ public class Collectable : ObjectOnClick
             yield return new WaitForEndOfFrame();
         }
         transform.position = Vector3.zero;
-        yield return new WaitForSeconds(0.5f);
         UIManager.Instance.ShowText("You found the " + gameObject.name, 10, new Color(0.1137f, 0.1215f, 0.898f), transform.position + new Vector3(0, 1.25f, 0), Vector3.up * 5, 2f);
         
         bool buttonPressed = false;

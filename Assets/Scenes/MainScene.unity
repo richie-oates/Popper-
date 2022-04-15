@@ -21154,7 +21154,7 @@ MonoBehaviour:
   spawnFrequencyIncreaseInterval: 10
   waveTime: 10
   waveTime_increasePerLevel: 5
-  timeBetweenWaves: 5
+  timeBetweenWaves: 3
   waveTime_remaining: 0
   waveCounter: 1
   waveText: {fileID: 1897167842}
