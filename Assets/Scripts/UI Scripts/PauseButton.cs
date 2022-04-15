@@ -9,6 +9,7 @@ public class PauseButton : MonoBehaviour
     float timer = 0;
     bool counting = false;
     [SerializeField] float holdTime = 1;
+    [SerializeField] Animator helperTextAnimator;
 
     void Update()
     {
@@ -31,5 +32,13 @@ public class PauseButton : MonoBehaviour
     public void OnPointerDown()
     {
         counting = true;
+        if (helperTextAnimator != null)
+            helperTextAnimator.Play("PauseHelperDisplay");
+    }
+
+    public void ShowHelperText()
+    {
+        if (helperTextAnimator != null)
+            helperTextAnimator.SetTrigger("PauseHelperDisplay");
     }
 }
