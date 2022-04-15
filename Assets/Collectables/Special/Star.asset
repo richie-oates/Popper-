@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 507bd02d861efc949a80c01d19ceb0b2, type: 3}
   rarity: 10
+  textColor: {r: 0.8490566, g: 0.7826595, b: 0.23629406, a: 1}
   HasBeenCollected: 0
   CanSpawn: 1
