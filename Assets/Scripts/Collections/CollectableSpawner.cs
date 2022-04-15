@@ -6,7 +6,6 @@ public class CollectableSpawner : MonoBehaviour
 {
     [SerializeField] Collections collections;
     [SerializeField] GameObject collectablePrefab;
-    Collection_so currentCollection;
 
     [SerializeField] float spawnRate = 1f;
 
@@ -16,7 +15,6 @@ public class CollectableSpawner : MonoBehaviour
     void Start()
     {
         GameManager.Instance.OnGameStateChanged.AddListener(HandleGameStateChanged);
-        currentCollection = collections.CurrentCollection;
     }
 
     void Update()
@@ -26,7 +24,7 @@ public class CollectableSpawner : MonoBehaviour
             spawnTimer += Time.deltaTime;
             if (spawnTimer >= spawnRate)
             {
-                SpawnCollectables(currentCollection.RemainingCollectables());
+                SpawnCollectables(collections.CurrentCollection.RemainingCollectables());
                 spawnTimer = 0;
             }
         }
@@ -44,11 +42,10 @@ public class CollectableSpawner : MonoBehaviour
             }
         }
 
-        if (currentCollection.RemainingCollectables().Count == 0)
+        if (collections.CurrentCollection.RemainingCollectables().Count == 0)
         {
-            PlayerPrefs.SetInt(currentCollection.name, 1);
-            currentCollection.SetAsComplete();
-            currentCollection = collections.CurrentCollection;
+            PlayerPrefs.SetInt(collections.CurrentCollection.name, 1);
+            collections.CurrentCollection.SetAsComplete();
         }
     }
 
