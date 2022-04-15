@@ -21857,15 +21857,15 @@ MonoBehaviour:
   vertSpeed_min: 0
   vertSpeed_max: 0
   initialSpawnInterval: 1
-  absolute_Min_SpawnInterval: 0.1
+  absolute_Min_SpawnInterval: 0.05
   spawnIntervalIncrement: 0.05
   current_spawnInterval: 0
+  spawnIntervalIncrementPerLevel: 0.01
   spawnFrequencyIncreaseInterval: 10
   waveTime: 10
   waveTime_increasePerLevel: 5
   timeBetweenWaves: 3
   waveTime_remaining: 0
-  waveCounter: 1
   waveText: {fileID: 1897167842}
   waveTimeText: {fileID: 1206364254}
   gameOver: 0

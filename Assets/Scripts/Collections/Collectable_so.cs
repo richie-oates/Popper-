@@ -8,6 +8,7 @@ public class Collectable_so : ScriptableObject
     [SerializeField] Sprite sprite;
     [SerializeField] int rarity;
     [SerializeField] Color textColor = Color.blue;
+    [SerializeField] int minimumLevelForSpawning;
 
     public bool HasBeenCollected;
 
@@ -18,4 +19,6 @@ public class Collectable_so : ScriptableObject
     public int Rarity { get { return rarity; } }
 
     public Color TextColor { get { return textColor; } }
+
+    public int MinimumLevelForSpawning { get { return minimumLevelForSpawning; } }
 }

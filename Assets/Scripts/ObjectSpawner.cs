@@ -18,12 +18,12 @@ public class ObjectSpawner : MonoBehaviour
     [SerializeField] private float vertSpeed_min_increase = 0.05f, vertSpeed_max_increase = 0.1f;
     [SerializeField] private float vertSpeed_min, vertSpeed_max;
     // Spawn interval variables
-    [SerializeField] private float initialSpawnInterval = 1.0f, absolute_Min_SpawnInterval = 0.1f, spawnIntervalIncrement = 0.025f, current_spawnInterval;
+    [SerializeField] private float initialSpawnInterval = 1.0f, absolute_Min_SpawnInterval = 0.1f, spawnIntervalIncrement = 0.025f, current_spawnInterval, spawnIntervalIncrementPerLevel;
     [SerializeField] private int spawnFrequencyIncreaseInterval = 10;
     // Wave time variables
     [SerializeField] private float waveTime = 30.0f, waveTime_increasePerLevel = 10.0f, timeBetweenWaves = 5.0f;
     [SerializeField] int waveTime_remaining;
-    public int waveCounter = 1; // TODO: check if this really needs to be public
+    public static int waveCounter = 1; // TODO: check if this really needs to be public
     
     // Text for debug HUD
     [SerializeField] TextMeshProUGUI waveText, waveTimeText;
@@ -154,7 +154,7 @@ public class ObjectSpawner : MonoBehaviour
         waveCounter++;
         UpdateWaveText();
         // Reset the spawn interval
-        current_spawnInterval = initialSpawnInterval;
+        current_spawnInterval = initialSpawnInterval - (waveCounter * spawnIntervalIncrementPerLevel);
         ResetSpeed();
 
         // Pause spawning for a certain amount of time and until the screen is mostly clear
@@ -224,8 +224,8 @@ public class ObjectSpawner : MonoBehaviour
 
     private void ResetSpeed()
     {
-        vertSpeed_min = vertSpeed_min_initial;
-        vertSpeed_max = vertSpeed_max_initial;
+        vertSpeed_min = vertSpeed_min_initial + vertSpeed_min_increase * (waveCounter - 1) * 0.5f;
+        vertSpeed_max = vertSpeed_max_initial + vertSpeed_max_increase * (waveCounter - 1) * 0.5f;
     }    
 
     private void DecreaseSpawnInterval()
