@@ -6,7 +6,7 @@ public class Collectable : ObjectOnClick
 {
     [SerializeField] Collectable_so collectable_so;
     [SerializeField] float animationMoveSpeed = 1.5f;
-
+    [SerializeField] ParticleSystem particlePrefab;
     Animator animator;
     SpriteRenderer spriteRenderer;
     CircleCollider2D thisCollider;
@@ -57,6 +57,7 @@ public class Collectable : ObjectOnClick
 
         if (PlayerScore.Instance.gameOver == true) return;
         base.OnClickOnObject();
+        Instantiate(particlePrefab,transform.position, Quaternion.identity);
         StartCoroutine(CollectActions());
     }
 

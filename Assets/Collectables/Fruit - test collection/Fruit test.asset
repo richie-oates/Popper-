@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39ef1bf512a441743af08452093e3113, type: 3}
+  m_Name: Fruit test
+  m_EditorClassIdentifier: 
+  collectable_sos:
+  - {fileID: 11400000, guid: 21af1de4bb1597c4e92d428bfc1f1d85, type: 2}
+  - {fileID: 11400000, guid: 1ed2a7d9ecfa9c9429842987c9b96ccd, type: 2}
+  - {fileID: 11400000, guid: cab16c2908cbc7a4f9fc835b773dd877, type: 2}
+  - {fileID: 11400000, guid: 2a352be4a70ba9741ba68619dd8e68be, type: 2}
+  - {fileID: 11400000, guid: 7295f28a6aed1b6498c0d73e34541d3e, type: 2}
+  googlePlay_ID: CgkIxsGD340MEAIQAw

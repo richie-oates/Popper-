@@ -254,3 +254,4 @@ MonoBehaviour:
   objectHit: 0
   collectable_so: {fileID: 0}
   animationMoveSpeed: 3
+  particlePrefab: {fileID: 3152048066968344805, guid: 791889388559b064b856b2bb5d935bce, type: 3}
