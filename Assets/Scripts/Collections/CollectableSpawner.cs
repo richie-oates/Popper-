@@ -24,8 +24,11 @@ public class CollectableSpawner : MonoBehaviour
             spawnTimer += Time.deltaTime;
             if (spawnTimer >= spawnRate)
             {
-                SpawnCollectables(collections.CurrentCollection.RemainingCollectables());
-                spawnTimer = 0;
+                if (collections.CurrentCollection != null)
+                {
+                    SpawnCollectables(collections.CurrentCollection.RemainingCollectables());
+                    spawnTimer = 0;
+                }
             }
         }
     }

@@ -9,16 +9,15 @@ using UnityEngine.UI;
 //
 public class PlayerScore : Singleton<PlayerScore>
 {
-    int score = 0, highScore = 0, highCombo = 0, bubblesLost, bubblesHit, combo = 0, comboLevel = 0, multiplier = 1;
-    int maxBubblesLost = 8, warningLevel = 6, timeForMultiplier = 5, dangerLevelPeriod = 5;
+    int score = 0, highScore = 0, highCombo = 0, combo = 0, comboLevel = 0, multiplier = 1;
+    int maxDangerLevel = 8, warningLevel = 6, timeForMultiplier = 5, dangerLevelPeriod = 5;
     [SerializeField] TextMeshProUGUI scoreText, highScoreText, bubbleLostText, comboText, comboLevelText, multiplierText;
     [SerializeField] Slider dangerLevelSlider, comboLevelSlider;
     [SerializeField] GameObject dangerWarningText;
-    int dangerLevel, currentMisses;
+    int objectsHit, dangerLevel;
 
     GameManager.GameState _currentState;
 
-    ObjectSpawner objectSpawner;
     public bool gameOver;
     private bool arcadeMode = true;
 
@@ -57,8 +56,6 @@ public class PlayerScore : Singleton<PlayerScore>
         EventBroker.HitObject += OnHitObject;
         EventBroker.MissedEverything += OnMissedEverything;
 
-        objectSpawner = FindObjectOfType<ObjectSpawner>(); // TODO: I'm not sure why I needed this, need to investigate
-
         InitialiseVariables();
 
         // Get high score and combo from player prefs and display it
@@ -72,13 +69,11 @@ public class PlayerScore : Singleton<PlayerScore>
         score = 0;
         scoreText.text = String.Format("{0:#,###0}", score);
         ResetCombo();
-        bubblesLost = 0;
-        bubblesHit = 0;
+        objectsHit = 0;
         multiplier = 1;
         dangerLevel = 0;
-        currentMisses = 0;
         dangerLevelSlider.value = 0;
-        dangerLevelSlider.maxValue = maxBubblesLost;
+        dangerLevelSlider.maxValue = maxDangerLevel;
         dangerWarningText.SetActive(false);
         gameOver = false;
         UpdateScore(0, null);
@@ -140,13 +135,6 @@ public class PlayerScore : Singleton<PlayerScore>
         if (!gameOver && (_currentState == GameManager.GameState.RUNNING
             || _currentState == GameManager.GameState.FROZEN))
         {
-            // every 3 bubbles hit reduces danger level
-            bubblesHit++;
-            if (bubblesHit >= 3)
-            {
-                bubblesHit = 0;
-                StartCoroutine(RemoveBubbleFromCount(0));
-            }
             // calculate points just scored and add them to the total score
             int extraPoints = points * comboLevel * multiplier;
             score += extraPoints;
@@ -192,6 +180,12 @@ public class PlayerScore : Singleton<PlayerScore>
             {
                 StartCoroutine(MultiplierTimer(timeForMultiplier));
             }
+            // every 4 bubbles hit reduces danger level
+            objectsHit++;
+            if (objectsHit % 3 == 0)
+            {
+                DangerLevelUpdate(-1);
+            }
         }
     }
 
@@ -220,10 +214,8 @@ public class PlayerScore : Singleton<PlayerScore>
         if (_currentState == GameManager.GameState.PREGAME || gameOver) return;
         if (args.objectTag == "Bubble" && arcadeMode)
         {
-            bubblesLost++;
-            bubbleLostText.text = "Bubbles Lost: " + bubblesLost; // DebugHUD
-            DangerLevelChange();
-            StartCoroutine(RemoveBubbleFromCount(dangerLevelPeriod));
+            DangerLevelUpdate(1);
+            StartCoroutine(ChangeDangerLevelAfterDelay(-1, dangerLevelPeriod));
         }
     }
 
@@ -233,19 +225,22 @@ public class PlayerScore : Singleton<PlayerScore>
         ResetCombo();
         if (arcadeMode)
         {
-            currentMisses++;
-            DangerLevelChange();
-            StartCoroutine(RemoveMissFromCount(dangerLevelPeriod));
+            DangerLevelUpdate(1);
+            StartCoroutine(ChangeDangerLevelAfterDelay(-1, dangerLevelPeriod));
         }
     }
 
-    public void DangerLevelChange()
+    public void DangerLevelUpdate(int changeAmount)
     {
+        dangerLevel += changeAmount;
+        if (dangerLevel < 0) dangerLevel = 0;
+
         if (gameOver || _currentState == GameManager.GameState.PREGAME) return;
+
         // Updates the danger level slider
-        dangerLevelSlider.maxValue = maxBubblesLost;
-        dangerLevel = bubblesLost + currentMisses;
+        dangerLevelSlider.maxValue = maxDangerLevel;
         dangerLevelSlider.value = dangerLevel;
+
         // Hides warning text at certain level
         if (dangerLevel < warningLevel)
         {
@@ -256,7 +251,7 @@ public class PlayerScore : Singleton<PlayerScore>
         {
             dangerWarningText.SetActive(true);
             // Triggers game over
-            if (dangerLevel >= maxBubblesLost)
+            if (dangerLevel >= maxDangerLevel)
             {
                 StartCoroutine(GameOverSequence());
             }
@@ -274,24 +269,12 @@ public class PlayerScore : Singleton<PlayerScore>
         GameManager.Instance.UpdateState(GameManager.GameState.ENDGAME);
     }
 
-    IEnumerator RemoveBubbleFromCount(float delay)
+    IEnumerator ChangeDangerLevelAfterDelay(int changeAmount, float delay)
     {
         yield return new WaitForSeconds(delay);
         if(!gameOver)
         {
-            bubblesLost--;
-            if (bubblesLost < 0) bubblesLost = 0;
-            DangerLevelChange();
-        }
-    }
-    IEnumerator RemoveMissFromCount(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        if (!gameOver)
-        {
-            currentMisses--;
-            if (currentMisses < 0) currentMisses = 0;
-            DangerLevelChange();
+            DangerLevelUpdate(changeAmount);
         }
     }
 

@@ -8,17 +8,52 @@ public class ObjectOnClick : MonoBehaviour
     [SerializeField] protected AudioClip[] onClickSounds;
     [SerializeField] protected bool objectHit;
 
+    Camera cam;
+    Collider2D thisCollider;
+
     protected virtual void Start()
     {
-        // Add listener for GameState changes
         GameManager.Instance.OnGameStateChanged.AddListener(HandleGameStateChanged);
         audioSource = GetComponent<AudioSource>();
+        objectHit = false;
+
+        cam = Camera.main;
+        thisCollider = GetComponent<Collider2D>();
     }
 
     protected virtual void OnEnable()
     {
-        //_currentState = GameManager.Instance.CurrentGameState;
         objectHit = false;
+    }
+
+#if UNITY_ANDROID
+    void Update()
+    {
+        CheckTouchInput();
+    }
+#endif
+
+    void CheckTouchInput()
+    {
+        if (_currentState == GameManager.GameState.PAUSED || objectHit)
+            return;
+
+        foreach (Touch touch in Input.touches)
+        {
+            if (touch.phase == TouchPhase.Began)
+            {
+                // Construct a ray from the current touch coordinates
+                Ray ray = Camera.main.ScreenPointToRay(touch.position);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit))
+                {
+                    if (hit.collider == thisCollider)
+                    {
+                        OnClickOnObject();
+                    }
+                }
+            }
+        }
     }
 
     public virtual void HandleGameStateChanged(GameManager.GameState currentState, GameManager.GameState previousState)
@@ -26,12 +61,14 @@ public class ObjectOnClick : MonoBehaviour
         _currentState = currentState;
     }
 
+#if UNITY_WEBGL || UNITY_EDITOR
     private void OnMouseDown()
     {
         if (_currentState == GameManager.GameState.PAUSED || objectHit)
             return;
         OnClickOnObject();
     }
+#endif
 
     protected virtual void OnClickOnObject()
     {

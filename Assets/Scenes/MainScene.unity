@@ -1703,7 +1703,7 @@ MonoBehaviour:
     spawnChance: 0
     waveIntroduced: 1
   - objectToPool: {fileID: 4997344439126310330, guid: 05a2187bf7c8bf4458f6d62313f6e108, type: 3}
-    amountToPool: 1
+    amountToPool: 2
     shouldExpand: 0
     rarity: 120
     spawnChance: 0
@@ -1721,7 +1721,7 @@ MonoBehaviour:
     spawnChance: 0
     waveIntroduced: 5
   - objectToPool: {fileID: 1097416576936203182, guid: 0e90671b307e66043ba2f2728a2b842e, type: 3}
-    amountToPool: 20
+    amountToPool: 25
     shouldExpand: 0
     rarity: 25
     spawnChance: 0
@@ -4662,7 +4662,7 @@ Transform:
   m_Children:
   - {fileID: 975728649}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &339341143
 MonoBehaviour:
@@ -11913,7 +11913,7 @@ Transform:
   - {fileID: 1676744676}
   - {fileID: 106963577}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1100939988
 GameObject:
