@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39ef1bf512a441743af08452093e3113, type: 3}
+  m_Name: Ravenmore Items
+  m_EditorClassIdentifier: 
+  collectable_sos:
+  - {fileID: 11400000, guid: a6a75c965d832934e96241899e5e3109, type: 2}
+  - {fileID: 11400000, guid: 7f72ef0cc4f122d4abf775400408d89e, type: 2}
+  - {fileID: 11400000, guid: 0010d38e7ce8cf14a901b76b6c315bf2, type: 2}
+  - {fileID: 11400000, guid: f4a7f923880c8cc4c8f9500071479dea, type: 2}
+  - {fileID: 11400000, guid: 121abcb394846ec4fa3d00cb77603a17, type: 2}
+  googlePlay_ID: CgkIxsGD340MEAIQBA

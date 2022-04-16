@@ -19,7 +19,7 @@ public class BirdOnClick : ObjectOnClick
         dead = false;
     }
 
-    protected override void OnClickOnObject()
+    public override void OnClickOnObject()
     {
         if (!dead)
         {

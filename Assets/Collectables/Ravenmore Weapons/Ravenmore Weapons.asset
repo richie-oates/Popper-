@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39ef1bf512a441743af08452093e3113, type: 3}
+  m_Name: Ravenmore Weapons
+  m_EditorClassIdentifier: 
+  collectable_sos:
+  - {fileID: 11400000, guid: de1f51b5b6575b94d96d285f5aca034d, type: 2}
+  - {fileID: 11400000, guid: 062c87bde908f0b438a802d49a329f23, type: 2}
+  - {fileID: 11400000, guid: ca66a8c212a6e5f4c9cde42a2a49684b, type: 2}
+  - {fileID: 11400000, guid: 658f448732d8bb0458f09ad7ade0800d, type: 2}
+  - {fileID: 11400000, guid: 14a8f312ed902b340a418964e272c341, type: 2}
+  googlePlay_ID: CgkIxsGD340MEAIQBA

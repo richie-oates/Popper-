@@ -43,7 +43,7 @@ public class Cloud : ObjectOnClick
         Size = scales.Length - 1;
     }
 
-    protected override void OnClickOnObject()
+    public override void OnClickOnObject()
     {
         base.OnClickOnObject();
             if (size == 0)

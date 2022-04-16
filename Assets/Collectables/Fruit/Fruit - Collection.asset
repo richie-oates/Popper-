@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 39ef1bf512a441743af08452093e3113, type: 3}
-  m_Name: Fruit
+  m_Name: Fruit - Collection
   m_EditorClassIdentifier: 
   collectable_sos:
   - {fileID: 11400000, guid: c08f216a722b6544b8cae4c6beef3285, type: 2}

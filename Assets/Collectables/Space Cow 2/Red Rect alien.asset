@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 084b3a1ffc3a6674d844ed99216b5965, type: 3}
+  m_Name: Red Rect alien
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 21300000, guid: 13e8ac61c009d8041bfaf98a2ef33bcc, type: 3}
+  rarity: 10
+  textColor: {r: 0.033285867, g: 0.052969623, b: 0.6415094, a: 1}
+  minimumLevelForSpawning: 14
+  HasBeenCollected: 0
+  CanSpawn: 1

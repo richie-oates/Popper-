@@ -21,7 +21,7 @@ public class BubbleOnClick : ObjectOnClick
         bubbleProperties = GetComponent<Bubble>();
     }
 
-    protected override void OnClickOnObject()
+    public override void OnClickOnObject()
     {
         animator.SetTrigger("pop");       
         playerScore.UpdateScore(bubbleProperties.Value, gameObject);

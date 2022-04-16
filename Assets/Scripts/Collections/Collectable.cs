@@ -42,7 +42,7 @@ public class Collectable : ObjectOnClick
         }
     }
 
-    protected override void OnClickOnObject()
+    public override void OnClickOnObject()
     {
         if (HasBeenCollected)
         {

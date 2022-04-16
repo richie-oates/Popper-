@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3195230163062997370}
   - component: {fileID: 646599352326087356}
   - component: {fileID: -8023982993707621799}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Clock
   m_TagString: Clock
   m_Icon: {fileID: 0}
@@ -252,7 +252,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1335681007516527340}
   - component: {fileID: 2921868219678597497}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: alarmClock
   m_TagString: Untagged
   m_Icon: {fileID: 0}

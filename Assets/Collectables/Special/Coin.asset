@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Coin
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 5e210f133eadc41418be6b4390a47547, type: 3}
-  rarity: 10
+  rarity: 20
   textColor: {r: 0.8490566, g: 0.7826595, b: 0.23629406, a: 1}
-  minimumLevelForSpawning: 10
+  minimumLevelForSpawning: 6
   HasBeenCollected: 0
   CanSpawn: 1

@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 4517501088645977778}
   - component: {fileID: 4227490014731884192}
   - component: {fileID: 5704833700004264396}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bubble
   m_TagString: Bubble
   m_Icon: {fileID: 0}
@@ -305,7 +305,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4699608896317782275}
   - component: {fileID: 6075520418054650649}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: 9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -389,7 +389,7 @@ GameObject:
   - component: {fileID: 2838484545265605854}
   - component: {fileID: 6364401489092717739}
   - component: {fileID: 1586921836953086574}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BubbleSpriteAnimator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -502,7 +502,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3599941076778787445}
   - component: {fileID: 3366374338891216907}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: 12
   m_TagString: Untagged
   m_Icon: {fileID: 0}

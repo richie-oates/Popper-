@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class ObjectOnClick : MonoBehaviour
 {
@@ -9,16 +10,17 @@ public class ObjectOnClick : MonoBehaviour
     [SerializeField] protected bool objectHit;
 
     Camera cam;
-    Collider2D thisCollider;
+    Collider2D myCollider2D;
+
 
     protected virtual void Start()
     {
         GameManager.Instance.OnGameStateChanged.AddListener(HandleGameStateChanged);
         audioSource = GetComponent<AudioSource>();
+        myCollider2D = GetComponent<Collider2D>();
         objectHit = false;
 
         cam = Camera.main;
-        thisCollider = GetComponent<Collider2D>();
     }
 
     protected virtual void OnEnable()
@@ -26,33 +28,28 @@ public class ObjectOnClick : MonoBehaviour
         objectHit = false;
     }
 
-#if UNITY_ANDROID
-    void Update()
+   void Update()
     {
-        CheckTouchInput();
-    }
-#endif
-
-    void CheckTouchInput()
-    {
-        if (_currentState == GameManager.GameState.PAUSED || objectHit)
+        if (objectHit)
             return;
-
+#if UNITY_ANDROID
+        
         foreach (Touch touch in Input.touches)
         {
             if (touch.phase == TouchPhase.Began)
             {
-                // Construct a ray from the current touch coordinates
-                Ray ray = Camera.main.ScreenPointToRay(touch.position);
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit))
-                {
-                    if (hit.collider == thisCollider)
-                    {
-                        OnClickOnObject();
-                    }
-                }
+                Vector3 worldPoint = cam.ScreenToWorldPoint(touch.position);
+                if (myCollider2D.OverlapPoint(worldPoint))
+                    OnClickOnObject();
             }
+        }
+#endif
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector3 worldPoint = cam.ScreenToWorldPoint(Input.mousePosition);
+
+            if (myCollider2D.OverlapPoint(worldPoint))
+                OnClickOnObject();
         }
     }
 
@@ -61,16 +58,16 @@ public class ObjectOnClick : MonoBehaviour
         _currentState = currentState;
     }
 
-#if UNITY_WEBGL || UNITY_EDITOR
+/*#if UNITY_WEBGL || UNITY_EDITOR
     private void OnMouseDown()
     {
         if (_currentState == GameManager.GameState.PAUSED || objectHit)
             return;
         OnClickOnObject();
     }
-#endif
+#endif*/
 
-    protected virtual void OnClickOnObject()
+    public virtual void OnClickOnObject()
     {
         if (_currentState == GameManager.GameState.PAUSED || objectHit)
             return;

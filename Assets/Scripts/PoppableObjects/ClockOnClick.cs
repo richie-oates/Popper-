@@ -18,7 +18,7 @@ public class ClockOnClick : ObjectOnClick
         base.Start();
     }
     
-    protected override void OnClickOnObject()
+    public override void OnClickOnObject()
     {
         base.OnClickOnObject();
         if (breakSounds.Length > 0)
