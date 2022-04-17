@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Green triangle alien
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 902e3aec226d6fe408c0d12930a116f9, type: 3}
-  rarity: 40
+  rarity: 60
   textColor: {r: 0.033285867, g: 0.052969623, b: 0.6415094, a: 1}
-  minimumLevelForSpawning: 12
+  minimumLevelForSpawning: 8
   HasBeenCollected: 0
   CanSpawn: 1

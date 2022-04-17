@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 084b3a1ffc3a6674d844ed99216b5965, type: 3}
-  m_Name: Helmet
+  m_Name: Envelope
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 0901910aeb7070a49b8e913188961161, type: 3}
-  rarity: 20
+  sprite: {fileID: 21300000, guid: 9435eb3f0dc80cf4db05e1fab8e4f29c, type: 3}
+  rarity: 50
   textColor: {r: 0.8301887, g: 0.500548, b: 0.027411906, a: 1}
   minimumLevelForSpawning: 6
   HasBeenCollected: 0

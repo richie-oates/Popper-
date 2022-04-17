@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Sword
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 49149e8554f33354dbde931ebb80be59, type: 3}
-  rarity: 30
+  rarity: 60
   textColor: {r: 0.6792453, g: 0.54578674, b: 0.086507656, a: 1}
   minimumLevelForSpawning: 6
   HasBeenCollected: 0

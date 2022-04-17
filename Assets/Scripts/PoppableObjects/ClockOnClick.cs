@@ -49,14 +49,13 @@ public class ClockOnClick : ObjectOnClick
         audioSource.PlayOneShot(ticking);
         yield return new WaitForSeconds(seconds);
         audioSource.Stop();
-        while (_currentState != GameManager.GameState.FROZEN)
+        while (GameManager.Instance.CurrentGameState != GameManager.GameState.FROZEN)
             yield return null;
         GameManager.Instance.UpdateState(GameManager.GameState.RUNNING);
     }
 
     public override void HandleGameStateChanged(GameManager.GameState currentState, GameManager.GameState previousState)
     {
-        _currentState = currentState;
         if (currentState == GameManager.GameState.PAUSED && previousState == GameManager.GameState.FROZEN)
         {
             audioSource.Pause();

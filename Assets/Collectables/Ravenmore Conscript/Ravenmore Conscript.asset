@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 39ef1bf512a441743af08452093e3113, type: 3}
-  m_Name: Ravenmore Items 2
+  m_Name: Ravenmore Conscript
   m_EditorClassIdentifier: 
   collectable_sos:
   - {fileID: 11400000, guid: d042a315b6e39734a9ba8e499e2c268d, type: 2}
@@ -18,4 +18,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 213f13aa2a937c043afd1f9002973b18, type: 2}
   - {fileID: 11400000, guid: 3d51ebffad553354dbe2482e68d15420, type: 2}
   - {fileID: 11400000, guid: 3d1f8cbc0f16a0f4cb5ecd459a8d3e05, type: 2}
-  googlePlay_ID: CgkIxsGD340MEAIQBA
+  googlePlay_ID: CgkIxsGD340MEAIQCQ

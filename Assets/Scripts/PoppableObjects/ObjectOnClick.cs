@@ -3,8 +3,6 @@ using UnityEngine.EventSystems;
 
 public class ObjectOnClick : MonoBehaviour
 {
-
-    protected GameManager.GameState _currentState;
     [SerializeField] protected AudioSource audioSource;
     [SerializeField] protected AudioClip[] onClickSounds;
     [SerializeField] protected bool objectHit;
@@ -12,10 +10,13 @@ public class ObjectOnClick : MonoBehaviour
     Camera cam;
     Collider2D myCollider2D;
 
+    void Awake()
+    {
+        GameManager.Instance.OnGameStateChanged.AddListener(HandleGameStateChanged);
+    }
 
     protected virtual void Start()
     {
-        GameManager.Instance.OnGameStateChanged.AddListener(HandleGameStateChanged);
         audioSource = GetComponent<AudioSource>();
         myCollider2D = GetComponent<Collider2D>();
         objectHit = false;
@@ -28,12 +29,14 @@ public class ObjectOnClick : MonoBehaviour
         objectHit = false;
     }
 
-   void Update()
+    // TODO: Add setting to choose input method
+
+   /*void Update()
     {
-        if (objectHit)
+        if (GameManager.Instance.CurrentGameState == GameManager.GameState.PAUSED || objectHit)
             return;
 #if UNITY_ANDROID
-        
+
         foreach (Touch touch in Input.touches)
         {
             if (touch.phase == TouchPhase.Began)
@@ -51,25 +54,18 @@ public class ObjectOnClick : MonoBehaviour
             if (myCollider2D.OverlapPoint(worldPoint))
                 OnClickOnObject();
         }
-    }
+    }*/
 
-    public virtual void HandleGameStateChanged(GameManager.GameState currentState, GameManager.GameState previousState)
-    {
-        _currentState = currentState;
-    }
-
-/*#if UNITY_WEBGL || UNITY_EDITOR
     private void OnMouseDown()
     {
-        if (_currentState == GameManager.GameState.PAUSED || objectHit)
+        if (GameManager.Instance.CurrentGameState == GameManager.GameState.PAUSED || objectHit)
             return;
         OnClickOnObject();
     }
-#endif*/
 
     public virtual void OnClickOnObject()
     {
-        if (_currentState == GameManager.GameState.PAUSED || objectHit)
+        if (GameManager.Instance.CurrentGameState == GameManager.GameState.PAUSED || objectHit)
             return;
 
         objectHit = true;
@@ -79,5 +75,10 @@ public class ObjectOnClick : MonoBehaviour
         }
 
         EventBroker.CallHitObject(gameObject);
+    }
+
+    public virtual void HandleGameStateChanged(GameManager.GameState currentState, GameManager.GameState previousState)
+    {
+        // blank to be overriden
     }
 }

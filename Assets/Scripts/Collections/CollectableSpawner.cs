@@ -15,6 +15,7 @@ public class CollectableSpawner : MonoBehaviour
     void Start()
     {
         GameManager.Instance.OnGameStateChanged.AddListener(HandleGameStateChanged);
+        ResetCollectablesChanceToSpawn();
     }
 
     void Update()
@@ -33,16 +34,36 @@ public class CollectableSpawner : MonoBehaviour
         }
     }
 
+    void ResetCollectablesChanceToSpawn()
+    {
+        if(collections.CurrentCollection != null)
+        {
+            foreach(Collectable_so collectable_So in collections.CurrentCollection.RemainingCollectables())
+            {
+                collectable_So.ResetChanceToSpawn();
+            }
+        }
+    }
+
     void SpawnCollectables(List<Collectable_so> collectablesToSpawn)
     {
         foreach (Collectable_so collectable in collectablesToSpawn)
         {
-            if (collectable.CanSpawn && ObjectSpawner.waveCounter >= collectable.MinimumLevelForSpawning && Random.Range(0, collectable.Rarity) == 0)
+            if (collectable.CanSpawn && ObjectSpawner.waveCounter >= collectable.MinimumLevelForSpawning)
             {
-                GameObject obj = Instantiate(collectablePrefab);
-                collectable.CanSpawn = false;
-                obj.GetComponent<Collectable>().SetCollectable_so(collectable);
+                if (Random.Range(0, collectable.ChanceToSpawn) == 0)
+                {
+                    GameObject obj = Instantiate(collectablePrefab);
+                    collectable.CanSpawn = false;
+                    obj.GetComponent<Collectable>().SetCollectable_so(collectable);
+                    collectable.ResetChanceToSpawn();
+                }
+                else
+                {
+                    collectable.IncrementChanceToSpawn();
+                }
             }
+            
         }
 
         if (collections.CurrentCollection.RemainingCollectables().Count == 0)
