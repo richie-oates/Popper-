@@ -22,7 +22,7 @@ public class RecordsMenu : MonoBehaviour
         highComboText.text = String.Format("{0:#,###0}", highCombo);
         
         bubblesText.text = String.Format("{0:#,###0}", playerStats_so.BubblesHitTotal);
-        accuracyText.text = String.Format("{0:0}", playerStats_so.AccuracyTotal) + " %";
+        accuracyText.text = String.Format("{0:0.0}", playerStats_so.AccuracyTotal) + " %";
     }
 
     /*private void GetGPGSScores()

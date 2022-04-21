@@ -16,7 +16,8 @@ public class PlayerStats_so : ScriptableObject
     #region Methods
     float CalculateAccuracy(int hits, int misses)
     {
-        return 100 * hits / (hits + misses);
+        float accuracy = 100.0f * hits / (hits + misses);
+        return accuracy;
     }
 
     public void AddBubbleHit()

@@ -78,7 +78,7 @@ public class UIManager : Singleton<UIManager>
             GameOverMenu.SetActive(true);
             scoreText.text = String.Format("{0:#,###0}", PlayerScore.Instance.Score);
             highScoreText.text = String.Format("{0:#,###0}", PlayerScore.Instance.HighScore);
-            accuracyText.text = String.Format("{0:0}", playerStats_so.AccuracyThisTurn) + " %";
+            accuracyText.text = String.Format("{0:0.0}", playerStats_so.AccuracyThisTurn) + " %";
         }
         if (currentState == GameManager.GameState.PREGAME)
         {
