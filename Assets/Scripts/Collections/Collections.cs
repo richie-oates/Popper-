@@ -44,7 +44,7 @@ public class Collections : MonoBehaviour
         }
     }
 
-    void RefreshCollections()
+    public void RefreshCollections()
     {
         completeCollections.Clear();
 
@@ -91,7 +91,6 @@ public class Collections : MonoBehaviour
     {
         get 
         {
-            RefreshCollections();
             return currentCollection; 
         }
     }

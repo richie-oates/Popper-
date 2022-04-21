@@ -71,6 +71,7 @@ public class CollectableSpawner : MonoBehaviour
         {
             PlayerPrefs.SetInt(collections.CurrentCollection.name, 1);
             collections.CurrentCollection.SetAsComplete();
+            collections.RefreshCollections();
             ResetCollectablesChanceToSpawn();
         }
     }
