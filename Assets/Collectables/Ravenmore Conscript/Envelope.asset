@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Envelope
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 9435eb3f0dc80cf4db05e1fab8e4f29c, type: 3}
-  rarity: 50
+  rarity: 300
   textColor: {r: 0.8301887, g: 0.500548, b: 0.027411906, a: 1}
-  minimumLevelForSpawning: 6
+  minimumLevelForSpawning: 2
   HasBeenCollected: 0
   CanSpawn: 1

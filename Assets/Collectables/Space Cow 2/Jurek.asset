@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Jurek
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 0896ce3668a6bef4099c475dd105b365, type: 3}
-  rarity: 50
+  rarity: 600
   textColor: {r: 0.033285867, g: 0.052969623, b: 0.6415094, a: 1}
-  minimumLevelForSpawning: 6
+  minimumLevelForSpawning: 2
   HasBeenCollected: 0
   CanSpawn: 1

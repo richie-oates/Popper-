@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Orange
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 2d5b2b79dbd20b54ca90c33f0443f11b, type: 3}
-  rarity: 100
+  rarity: 200
   textColor: {r: 0.26059094, g: 0.9056604, b: 0.26289728, a: 1}
-  minimumLevelForSpawning: 4
-  HasBeenCollected: 1
-  CanSpawn: 0
+  minimumLevelForSpawning: 2
+  HasBeenCollected: 0
+  CanSpawn: 1

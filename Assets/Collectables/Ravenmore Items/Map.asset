@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Map
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: d9bfab75ee11f734ca08db889f7136b8, type: 3}
-  rarity: 50
+  rarity: 1200
   textColor: {r: 0.6792453, g: 0.54578674, b: 0.086507656, a: 1}
-  minimumLevelForSpawning: 6
+  minimumLevelForSpawning: 2
   HasBeenCollected: 0
   CanSpawn: 1

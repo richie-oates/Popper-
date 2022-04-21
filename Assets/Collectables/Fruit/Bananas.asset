@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Bananas
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 7984d7232c169424c9ed77419c57ea0a, type: 3}
-  rarity: 80
+  rarity: 150
   textColor: {r: 0.26059094, g: 0.9056604, b: 0.26289728, a: 1}
   minimumLevelForSpawning: 2
-  HasBeenCollected: 1
-  CanSpawn: 0
+  HasBeenCollected: 0
+  CanSpawn: 1

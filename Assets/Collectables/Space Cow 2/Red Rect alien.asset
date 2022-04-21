@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Red Rect alien
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 13e8ac61c009d8041bfaf98a2ef33bcc, type: 3}
-  rarity: 40
+  rarity: 1000
   textColor: {r: 0.033285867, g: 0.052969623, b: 0.6415094, a: 1}
-  minimumLevelForSpawning: 14
+  minimumLevelForSpawning: 2
   HasBeenCollected: 0
   CanSpawn: 1

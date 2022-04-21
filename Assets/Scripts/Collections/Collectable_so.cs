@@ -9,7 +9,7 @@ public class Collectable_so : ScriptableObject
     [SerializeField] int rarity;
     [SerializeField] Color textColor = Color.blue;
     [SerializeField] int minimumLevelForSpawning;
-    int chanceToSpawn;
+    int chanceToSpawn = -10;
 
     public bool HasBeenCollected;
 

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Blue rect alien
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 432e06092e9cb5e47b3ff17ef222012e, type: 3}
-  rarity: 60
+  rarity: 150
   textColor: {r: 0.033285867, g: 0.052969623, b: 0.6415094, a: 1}
-  minimumLevelForSpawning: 4
+  minimumLevelForSpawning: 2
   HasBeenCollected: 0
   CanSpawn: 1

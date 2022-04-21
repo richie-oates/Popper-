@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Coconut
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: dfd761479895e3a47a680471adcaa4d6, type: 3}
-  rarity: 100
+  rarity: 600
   textColor: {r: 0.26059094, g: 0.9056604, b: 0.26289728, a: 1}
-  minimumLevelForSpawning: 8
+  minimumLevelForSpawning: 2
   HasBeenCollected: 0
   CanSpawn: 1

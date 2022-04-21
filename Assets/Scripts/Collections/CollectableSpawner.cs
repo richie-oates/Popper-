@@ -7,6 +7,7 @@ public class CollectableSpawner : MonoBehaviour
     [SerializeField] Collections collections;
     [SerializeField] GameObject collectablePrefab;
 
+    [Tooltip("Time(seconds) between spawn attempts")]
     [SerializeField] float spawnRate = 1f;
 
     float spawnTimer = 0;
@@ -70,6 +71,7 @@ public class CollectableSpawner : MonoBehaviour
         {
             PlayerPrefs.SetInt(collections.CurrentCollection.name, 1);
             collections.CurrentCollection.SetAsComplete();
+            ResetCollectablesChanceToSpawn();
         }
     }
 
