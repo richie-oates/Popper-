@@ -14,8 +14,8 @@ public class ClockOnClick : ObjectOnClick
 
     protected override void Start()
     {
-        clockMovement = GetComponent<ClockMovement>();
         base.Start();
+        clockMovement = GetComponent<ClockMovement>();
     }
     
     public override void OnClickOnObject()
@@ -32,7 +32,7 @@ public class ClockOnClick : ObjectOnClick
             ClockOnClick[] clocks = FindObjectsOfType<ClockOnClick>();
             foreach (ClockOnClick clock in clocks)
             {
-                if (clock.freezeTimeCoroutine != null)
+                if (clock.freezeTimeCoroutine != null && clock != this)
                 {
                     clock.StopCoroutine(clock.freezeTimeCoroutine);
                     clock.audioSource.Stop();

@@ -318,7 +318,10 @@ MonoBehaviour:
   onClickSounds:
   - {fileID: 8300000, guid: f61f3d63a531b8e43a0383863387145b, type: 3}
   objectHit: 0
-  explosionRadius: 3.25
+  explosionRadius: 2.5
+  poppableLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!114 &-5325293677046073983
 MonoBehaviour:
   m_ObjectHideFlags: 0

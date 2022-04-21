@@ -901,6 +901,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 238459785650514393, guid: c82e67233fd5a2f458f7ede10c82c8ba, type: 3}
+      propertyPath: playerStats_so
+      value: 
+      objectReference: {fileID: 11400000, guid: ca31ddc511a34684586dd35ee5eaba1e, type: 2}
+    - target: {fileID: 238459785650514393, guid: c82e67233fd5a2f458f7ede10c82c8ba, type: 3}
+      propertyPath: bubbleLeaderboardID
+      value: CgkIxsGD340MEAIQDA
+      objectReference: {fileID: 0}
+    - target: {fileID: 238459785650514393, guid: c82e67233fd5a2f458f7ede10c82c8ba, type: 3}
+      propertyPath: accuracyLeaderboardID
+      value: CgkIxsGD340MEAIQCw
+      objectReference: {fileID: 0}
     - target: {fileID: 4084087626904370176, guid: c82e67233fd5a2f458f7ede10c82c8ba, type: 3}
       propertyPath: loadingText
       value: 

@@ -51,7 +51,7 @@ public class CollectableSpawner : MonoBehaviour
         {
             if (collectable.CanSpawn && ObjectSpawner.waveCounter >= collectable.MinimumLevelForSpawning)
             {
-                if (Random.Range(0, collectable.ChanceToSpawn) == 0)
+                if (Random.Range(0, collectable.ChanceToSpawn) == collectable.ChanceToSpawn - 1)
                 {
                     GameObject obj = Instantiate(collectablePrefab);
                     collectable.CanSpawn = false;

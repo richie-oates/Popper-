@@ -65,8 +65,8 @@ public class ObjectOnClick : MonoBehaviour
 
     public virtual void OnClickOnObject()
     {
-        if (GameManager.Instance.CurrentGameState == GameManager.GameState.PAUSED || objectHit)
-            return;
+        if (objectHit) return;
+        if (GameManager.Instance.CurrentGameState == GameManager.GameState.PAUSED) return;
 
         objectHit = true;
         if (onClickSounds.Length > 0)

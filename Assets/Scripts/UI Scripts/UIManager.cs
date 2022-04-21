@@ -14,8 +14,10 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] Animator startMenuAnimator, comboLevelUpTextAnimator;
     GameManager.GameState _currentState;
     [SerializeField] float delayShowStartMenuTime = 5;
-    [SerializeField] TextMeshProUGUI scoreText, highScoreText;
+    [SerializeField] TextMeshProUGUI scoreText, highScoreText, accuracyText;
     public FloatingTextManager floatingTextManager;
+
+    [SerializeField] PlayerStats_so playerStats_so;
 
     // Start is called before the first frame update
     void Start()
@@ -76,6 +78,7 @@ public class UIManager : Singleton<UIManager>
             GameOverMenu.SetActive(true);
             scoreText.text = String.Format("{0:#,###0}", PlayerScore.Instance.Score);
             highScoreText.text = String.Format("{0:#,###0}", PlayerScore.Instance.HighScore);
+            accuracyText.text = String.Format("{0:0}", playerStats_so.AccuracyThisTurn) + " %";
         }
         if (currentState == GameManager.GameState.PREGAME)
         {

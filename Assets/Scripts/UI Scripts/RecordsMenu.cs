@@ -7,29 +7,25 @@ using UnityEngine.SocialPlatforms;
 
 public class RecordsMenu : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI highScoreText, highComboText;
-    [SerializeField] TextMeshProUGUI leaderName, leaderScore;
-    ILeaderboard leaderboard;
+    [SerializeField] TextMeshProUGUI highScoreText, highComboText, bubblesText, accuracyText;
+    [SerializeField] PlayerStats_so playerStats_so;
+
     int highScore, highCombo;
+
 
     private void OnEnable()
     {
         highScore = PlayerPrefs.GetInt("highscore", highScore);
         highScoreText.text = String.Format("{0:#,###0}", highScore);
+
         highCombo = PlayerPrefs.GetInt("highCombo", highCombo);
         highComboText.text = String.Format("{0:#,###0}", highCombo);
-        if (GameManager.Instance.IsConnectedToGooglePlayServices)
-        {
-            GetGPGSScores();
-        }
-        else
-        {
-            leaderName.text = "Not connected to play services";
-            Debug.Log("Unable to load scores. Not connected to play services");
-        }
+        
+        bubblesText.text = String.Format("{0:#,###0}", playerStats_so.BubblesHitTotal);
+        accuracyText.text = String.Format("{0:0}", playerStats_so.AccuracyTotal) + " %";
     }
 
-    private void GetGPGSScores()
+    /*private void GetGPGSScores()
     {
         Social.LoadScores(GPGSIds.leaderboard_high_score, scores =>
         {
@@ -43,7 +39,7 @@ public class RecordsMenu : MonoBehaviour
                 leaderName.text = "No scores loaded";
             }
         });
-    }
+    }*/
 
     /*void DoLeaderboard()
     {
@@ -67,7 +63,7 @@ public class RecordsMenu : MonoBehaviour
             }
     }*/
 
-    string GetProfileName(IScore[] scores)
+    /*string GetProfileName(IScore[] scores)
     {
         Debug.Log("Getting user profiles");
         string profileName = "No data";
@@ -84,7 +80,7 @@ public class RecordsMenu : MonoBehaviour
         });
         Debug.Log("Profile Name: " + profileName);
         return profileName;
-    }
+    }*/
 
     public void PlayServicesButton()
     {
