@@ -1,11 +1,14 @@
 using System;
 using UnityEngine;
+using GooglePlayGames;
+using UnityEngine.SocialPlatforms;
 
 public class PlayerStats : MonoBehaviour
 {
     [SerializeField] PlayerStats_so playerStats_so;
     [SerializeField] string accuracyLeaderboardID;
     [SerializeField] string bubbleLeaderboardID;
+    [SerializeField] string gamesPlayedEventID;
 
     void Awake()
     {
@@ -35,6 +38,8 @@ public class PlayerStats : MonoBehaviour
             case GameManager.GameState.RUNNING :
                 if (previousState == GameManager.GameState.PREGAME)
                         playerStats_so.ResetTurnCounts();
+                playerStats_so.AddGamesPlayed();
+                SubmitEvent(gamesPlayedEventID);
                 break;
 
             case GameManager.GameState.PREGAME :
@@ -95,6 +100,18 @@ public class PlayerStats : MonoBehaviour
         else
         {
             Debug.Log("Not signed in .. unable to report stats");
+        }
+    }
+
+    public void SubmitEvent(String eventId)
+    {
+        try
+        {
+            PlayGamesPlatform.Instance.Events.IncrementEvent(eventId, 1);
+        }
+        catch
+        {
+            print("Failed to post event to GPGS");
         }
     }
 }

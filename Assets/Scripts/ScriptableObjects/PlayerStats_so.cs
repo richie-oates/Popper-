@@ -11,6 +11,8 @@ public class PlayerStats_so : ScriptableObject
     int bubblesHitThisTurn;
     int objectsHitThisTurn;
     int missesThisTurn;
+
+    int gamesPlayedTotal;
     #endregion
 
     #region Methods
@@ -36,6 +38,11 @@ public class PlayerStats_so : ScriptableObject
     {
         missesThisTurn++;
         missesTotal++;
+    }
+
+    public void AddGamesPlayed()
+    {
+        gamesPlayedTotal++;
     }
 
     public void ResetTurnCounts()
@@ -108,6 +115,11 @@ public class PlayerStats_so : ScriptableObject
     public float AccuracyThisTurn
     {
         get { return CalculateAccuracy(objectsHitThisTurn, MissesThisTurn); }
+    }
+
+    public int GamesPlayedTotal
+    {
+        get { return gamesPlayedTotal; }
     }
     #endregion
 }
