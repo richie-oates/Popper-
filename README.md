@@ -1,5 +1,7 @@
 # Popper-
-A 2D bubble popping game for Android
+A 2D bubble popping game designed for Android
+Play the web version here ... https://richie-oates.github.io/Popper-/
+Get the android version here ... https://play.google.com/store/apps/details?id=com.DrahcirGames.Popper&hl=en&gl=US
 
 	A recreation of a game I played on a Windows PDA with a stylus back in around 2007/8.
 	I don't remember the title of that game and all my search attempts have drawn a blank so 
